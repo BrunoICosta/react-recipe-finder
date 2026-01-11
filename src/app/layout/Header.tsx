@@ -1,6 +1,7 @@
 import { useEffect, useId, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router'
 import { ChefHatIcon, CloseIcon, MenuIcon } from '@/shared/components/icons'
+import { ThemeToggle } from './ThemeToggle'
 import styles from './Header.module.css'
 
 const NAV_ITEMS = [{ to: '/', label: 'Buscar', end: true }] as const
@@ -36,6 +37,10 @@ export function Header() {
           </span>
           Receitário
         </Link>
+
+        <div className={styles.actions}>
+          <ThemeToggle />
+        </div>
 
         <button
           type="button"
