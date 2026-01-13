@@ -56,6 +56,15 @@ export function CloseIcon(props: IconProps) {
   )
 }
 
+export function AlertIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 8v4M12 16h.01" />
+    </Icon>
+  )
+}
+
 export function SunIcon(props: IconProps) {
   return (
     <Icon {...props}>
