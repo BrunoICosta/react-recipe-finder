@@ -45,5 +45,14 @@ export function useSearchQuery(param = 'q') {
 
   const submit = useCallback(() => commit(term.trim()), [commit, term])
 
-  return { term, setTerm, query, submit }
+  /** Fills the input and searches right away (used by suggestion chips). */
+  const apply = useCallback(
+    (value: string) => {
+      setTerm(value)
+      commit(value.trim())
+    },
+    [commit],
+  )
+
+  return { term, setTerm, query, submit, apply }
 }
