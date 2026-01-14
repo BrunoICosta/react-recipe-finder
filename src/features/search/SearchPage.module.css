@@ -1,9 +1,9 @@
 .hero {
   display: grid;
-  gap: var(--space-3);
-  padding-block: var(--space-5) var(--space-6);
-  text-align: center;
   justify-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-4) var(--space-6);
+  text-align: center;
 }
 
 .eyebrow {
@@ -24,4 +24,50 @@
   max-width: 34rem;
   color: var(--color-text-muted);
   font-size: 1.05rem;
+}
+
+.search {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: center;
+  width: 100%;
+  max-width: 40rem;
+  margin-top: var(--space-3);
+}
+
+.hint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+.suggestion {
+  padding: 0.15rem var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition:
+    border-color var(--transition),
+    color var(--transition);
+}
+
+.suggestion:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.results {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.count {
+  color: var(--color-text-muted);
+  font-weight: 500;
 }
