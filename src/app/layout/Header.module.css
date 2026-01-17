@@ -101,7 +101,12 @@
     display: none;
   }
 
+  .actions {
+    order: 2;
+  }
+
   .nav {
+    order: 1;
     position: static;
     display: block;
     padding: 0;
