@@ -1,0 +1,36 @@
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.text {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+.title {
+  font-size: clamp(1.75rem, 4.5vw, 2.5rem);
+}
+
+.description {
+  max-width: 40rem;
+  color: var(--color-text-muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}

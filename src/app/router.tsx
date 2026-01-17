@@ -6,6 +6,7 @@ import { RouteError } from './RouteError'
 // Every page is its own chunk; the layout renders a Suspense fallback while it loads.
 const SearchPage = lazy(() => import('@/features/search/SearchPage'))
 const RecipePage = lazy(() => import('@/features/recipe/RecipePage'))
+const FavoritesPage = lazy(() => import('@/features/favorites/FavoritesPage'))
 const NotFoundPage = lazy(() => import('./NotFoundPage'))
 
 export const router = createBrowserRouter(
@@ -16,6 +17,7 @@ export const router = createBrowserRouter(
       children: [
         { index: true, element: <SearchPage /> },
         { path: 'receita/:id', element: <RecipePage /> },
+        { path: 'favoritas', element: <FavoritesPage /> },
         { path: '*', element: <NotFoundPage /> },
       ],
     },

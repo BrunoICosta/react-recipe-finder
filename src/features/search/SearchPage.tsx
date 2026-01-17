@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react'
 import { useSearchParams } from 'react-router'
 import { useAsync } from '@/core/hooks/useAsync'
 import { useDocumentTitle } from '@/core/hooks/useDocumentTitle'
+import { FavoriteButton } from '@/features/favorites/FavoriteButton'
 import { RecipeCard } from '@/shared/components/RecipeCard'
 import { RecipeGrid, RecipeGridSkeleton } from '@/shared/components/RecipeGrid'
 import { EmptyState, ErrorState } from '@/shared/components/StateMessage'
@@ -116,6 +117,7 @@ export default function SearchPage() {
                     name={recipe.name}
                     thumbnail={recipe.thumbnail}
                     meta={recipe.meta}
+                    action={<FavoriteButton recipe={recipe} variant="icon" />}
                   />
                 ))}
               </RecipeGrid>

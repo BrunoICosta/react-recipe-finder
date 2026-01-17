@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router'
 import { getRecipe } from '@/core/api/mealdb'
 import { useAsync } from '@/core/hooks/useAsync'
 import { useDocumentTitle } from '@/core/hooks/useDocumentTitle'
+import { FavoriteButton } from '@/features/favorites/FavoriteButton'
 import { BackButton } from '@/shared/components/BackButton'
 import { EmptyState, ErrorState } from '@/shared/components/StateMessage'
 import { RecipeDetail } from './components/RecipeDetail'
@@ -30,7 +31,7 @@ export default function RecipePage() {
 
       {status === 'success' &&
         (data ? (
-          <RecipeDetail key={data.id} recipe={data} />
+          <RecipeDetail key={data.id} recipe={data} actions={<FavoriteButton recipe={data} />} />
         ) : (
           <EmptyState
             title="Receita não encontrada"

@@ -1,15 +1,27 @@
 import { useEffect, useId, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router'
 import { ChefHatIcon, CloseIcon, MenuIcon } from '@/shared/components/icons'
+import { useFavorites } from '@/features/favorites/useFavorites'
 import { ThemeToggle } from './ThemeToggle'
 import styles from './Header.module.css'
 
-const NAV_ITEMS = [{ to: '/', label: 'Buscar', end: true }] as const
+interface NavItem {
+  to: string
+  label: string
+  end?: boolean
+  badge?: 'favorites'
+}
+
+const NAV_ITEMS: NavItem[] = [
+  { to: '/', label: 'Buscar', end: true },
+  { to: '/favoritas', label: 'Favoritas', badge: 'favorites' },
+]
 
 export function Header() {
   const [open, setOpen] = useState(false)
   const navId = useId()
   const { pathname } = useLocation()
+  const { favorites } = useFavorites()
 
   // Close the mobile menu after navigating. Adjusting state while rendering
   // (instead of in an effect) avoids an extra paint with the menu still open.
@@ -65,6 +77,12 @@ export function Header() {
                   }
                 >
                   {item.label}
+                  {item.badge === 'favorites' && favorites.length > 0 && (
+                    <span className={styles.badge}>
+                      {favorites.length}
+                      <span className="visually-hidden"> salvas</span>
+                    </span>
+                  )}
                 </NavLink>
               </li>
             ))}

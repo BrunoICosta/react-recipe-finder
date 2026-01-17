@@ -4,6 +4,8 @@ import type { RecipeSummary } from '@/core/models/recipe'
 export type SearchMode = 'nome' | 'ingrediente'
 
 export interface SearchResult extends RecipeSummary {
+  category?: string | null
+  area?: string | null
   meta: (string | null)[]
 }
 
@@ -28,6 +30,8 @@ export const SEARCH_MODES: Record<SearchMode, SearchModeConfig> = {
         id: recipe.id,
         name: recipe.name,
         thumbnail: recipe.thumbnail,
+        category: recipe.category,
+        area: recipe.area,
         meta: [recipe.category, recipe.area],
       })),
   },
