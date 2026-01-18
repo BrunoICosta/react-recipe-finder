@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import type { Recipe } from '@/core/models/recipe'
 import { ChefHatIcon, ExternalLinkIcon, PlayIcon } from '@/shared/components/icons'
 import { thumbnailUrl } from '@/shared/utils/image'
+import { categoryLabel } from '@/shared/utils/labels'
 import { IngredientList } from './IngredientList'
 import styles from './RecipeDetail.module.css'
 
@@ -36,10 +37,10 @@ export function RecipeDetail({ recipe, actions, linkTaxonomy = true }: RecipeDet
               <li>
                 {linkTaxonomy ? (
                   <Link to={`/categorias/${encodeURIComponent(recipe.category)}`}>
-                    {recipe.category}
+                    {categoryLabel(recipe.category)}
                   </Link>
                 ) : (
-                  <span>{recipe.category}</span>
+                  <span>{categoryLabel(recipe.category)}</span>
                 )}
               </li>
             )}

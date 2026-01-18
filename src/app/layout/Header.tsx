@@ -14,6 +14,7 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { to: '/', label: 'Buscar', end: true },
+  { to: '/categorias', label: 'Categorias' },
   { to: '/favoritas', label: 'Favoritas', badge: 'favorites' },
 ]
 
