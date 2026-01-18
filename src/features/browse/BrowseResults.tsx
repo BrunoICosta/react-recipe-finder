@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useParams } from 'react-router'
-import { getRecipesByCategory } from '@/core/api/mealdb'
+import { getRecipesByCategory, getRecipesByCuisine } from '@/core/api/mealdb'
 import type { RecipeSummary } from '@/core/models/recipe'
 import { useAsync } from '@/core/hooks/useAsync'
 import { useDocumentTitle } from '@/core/hooks/useDocumentTitle'
@@ -13,7 +13,7 @@ import { EmptyState, ErrorState } from '@/shared/components/StateMessage'
 import { categoryLabel } from '@/shared/utils/labels'
 import styles from './Browse.module.css'
 
-export type BrowseKind = 'category'
+export type BrowseKind = 'category' | 'cuisine'
 
 interface BrowseConfig {
   param: string
@@ -34,6 +34,15 @@ const CONFIG: Record<BrowseKind, BrowseConfig> = {
     label: categoryLabel,
     load: getRecipesByCategory,
     toFavorite: (category) => ({ category }),
+  },
+  cuisine: {
+    param: 'cuisine',
+    eyebrow: 'Cozinha',
+    backTo: '/cozinhas',
+    backLabel: 'Todas as cozinhas',
+    label: (cuisine) => cuisine,
+    load: getRecipesByCuisine,
+    toFavorite: (area) => ({ area }),
   },
 }
 

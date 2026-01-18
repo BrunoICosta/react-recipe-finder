@@ -8,6 +8,8 @@ const SearchPage = lazy(() => import('@/features/search/SearchPage'))
 const RecipePage = lazy(() => import('@/features/recipe/RecipePage'))
 const CategoriesPage = lazy(() => import('@/features/browse/CategoriesPage'))
 const CategoryRecipesPage = lazy(() => import('@/features/browse/CategoryRecipesPage'))
+const CuisinesPage = lazy(() => import('@/features/browse/CuisinesPage'))
+const CuisineRecipesPage = lazy(() => import('@/features/browse/CuisineRecipesPage'))
 const FavoritesPage = lazy(() => import('@/features/favorites/FavoritesPage'))
 const NotFoundPage = lazy(() => import('./NotFoundPage'))
 
@@ -21,6 +23,8 @@ export const router = createBrowserRouter(
         { path: 'receita/:id', element: <RecipePage /> },
         { path: 'categorias', element: <CategoriesPage /> },
         { path: 'categorias/:category', element: <CategoryRecipesPage /> },
+        { path: 'cozinhas', element: <CuisinesPage /> },
+        { path: 'cozinhas/:cuisine', element: <CuisineRecipesPage /> },
         { path: 'favoritas', element: <FavoritesPage /> },
         { path: '*', element: <NotFoundPage /> },
       ],
