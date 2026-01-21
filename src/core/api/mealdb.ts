@@ -81,11 +81,16 @@ export async function getRecipe(id: string, signal?: AbortSignal): Promise<Recip
   return meal ? toRecipe(meal) : null
 }
 
-/** Never cached: every call should return a different recipe. */
+/**
+ * Never cached itself (every call should return a different recipe), but the result
+ * seeds the lookup cache so the detail page opens without a second request.
+ */
 export async function getRandomRecipe(signal?: AbortSignal): Promise<Recipe | null> {
   const response = await getJson<MealsResponse<RawMeal>>(buildUrl('random.php'), signal)
   const [meal] = mealsOf(response)
-  return meal ? toRecipe(meal) : null
+  if (!meal) return null
+  cache.set(buildUrl('lookup.php', { i: meal.idMeal }), { meals: [meal] })
+  return toRecipe(meal)
 }
 
 export async function listCategories(signal?: AbortSignal): Promise<Category[]> {

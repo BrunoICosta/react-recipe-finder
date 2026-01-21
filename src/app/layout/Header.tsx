@@ -2,6 +2,7 @@ import { useEffect, useId, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router'
 import { ChefHatIcon, CloseIcon, MenuIcon } from '@/shared/components/icons'
 import { useFavorites } from '@/features/favorites/useFavorites'
+import { RandomRecipeButton } from '@/features/random/RandomRecipeButton'
 import { ThemeToggle } from './ThemeToggle'
 import styles from './Header.module.css'
 
@@ -53,6 +54,7 @@ export function Header() {
         </Link>
 
         <div className={styles.actions}>
+          <RandomRecipeButton variant="compact" />
           <ThemeToggle />
         </div>
 
