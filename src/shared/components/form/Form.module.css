@@ -1,0 +1,61 @@
+.field {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.required {
+  color: var(--color-danger);
+}
+
+.optional {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.hint {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.error {
+  color: var(--color-danger);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Shared look for text inputs, selects and textareas inside forms. */
+.control {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.control:hover {
+  border-color: color-mix(in srgb, var(--color-border) 50%, var(--color-text-muted));
+}
+
+.control:focus-visible {
+  border-color: var(--color-primary);
+}
+
+.control[aria-invalid='true'] {
+  border-color: var(--color-danger);
+}
+
+textarea.control {
+  min-height: 10rem;
+  resize: vertical;
+  line-height: 1.55;
+}
