@@ -11,6 +11,9 @@ const CategoryRecipesPage = lazy(() => import('@/features/browse/CategoryRecipes
 const CuisinesPage = lazy(() => import('@/features/browse/CuisinesPage'))
 const CuisineRecipesPage = lazy(() => import('@/features/browse/CuisineRecipesPage'))
 const FavoritesPage = lazy(() => import('@/features/favorites/FavoritesPage'))
+const MyRecipesPage = lazy(() => import('@/features/my-recipes/MyRecipesPage'))
+const MyRecipeDetailPage = lazy(() => import('@/features/my-recipes/MyRecipeDetailPage'))
+const RecipeEditorPage = lazy(() => import('@/features/my-recipes/RecipeEditorPage'))
 const NotFoundPage = lazy(() => import('./NotFoundPage'))
 
 export const router = createBrowserRouter(
@@ -26,6 +29,15 @@ export const router = createBrowserRouter(
         { path: 'cozinhas', element: <CuisinesPage /> },
         { path: 'cozinhas/:cuisine', element: <CuisineRecipesPage /> },
         { path: 'favoritas', element: <FavoritesPage /> },
+        {
+          path: 'minhas-receitas',
+          children: [
+            { index: true, element: <MyRecipesPage /> },
+            { path: 'nova', element: <RecipeEditorPage /> },
+            { path: ':id', element: <MyRecipeDetailPage /> },
+            { path: ':id/editar', element: <RecipeEditorPage /> },
+          ],
+        },
         { path: '*', element: <NotFoundPage /> },
       ],
     },

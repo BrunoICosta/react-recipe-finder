@@ -1,0 +1,7 @@
+.back {
+  margin-bottom: var(--space-4);
+}
+
+.narrow {
+  max-width: 52rem;
+}

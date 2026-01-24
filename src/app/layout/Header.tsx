@@ -18,6 +18,7 @@ const NAV_ITEMS: NavItem[] = [
   { to: '/categorias', label: 'Categorias' },
   { to: '/cozinhas', label: 'Cozinhas' },
   { to: '/favoritas', label: 'Favoritas', badge: 'favorites' },
+  { to: '/minhas-receitas', label: 'Minhas receitas' },
 ]
 
 export function Header() {

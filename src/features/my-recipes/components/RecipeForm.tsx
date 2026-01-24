@@ -121,7 +121,11 @@ export function RecipeForm({
         </div>
 
         <div className={styles.row}>
-          <FormField id={id('thumbnail')} label="Imagem (URL)" error={errors.thumbnail?.message}>
+          <FormField
+            id={id('thumbnail')}
+            label="Endereço da imagem"
+            error={errors.thumbnail?.message}
+          >
             <input
               id={id('thumbnail')}
               type="url"
