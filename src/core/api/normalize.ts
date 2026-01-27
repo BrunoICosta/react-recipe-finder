@@ -4,6 +4,8 @@ import type { RawCategory, RawMeal, RawMealPreview } from './types'
 const MAX_INGREDIENTS = 20
 const STEP_HEADING = /^step\s*\d+\s*[:.)-]?\s*/i
 const NUMBERED_LINE = /^\d+\s*[.)-]\s+/
+/** Bullets and checkbox glyphs some recipes use to start a line ("*", "•", "▢"). */
+const BULLET = /^(?:[*•▪◦▢]+\s*|[–-]\s+)/
 const SENTENCE_BREAK = /(?<=[.!?])\s+(?=[A-Z0-9])/
 
 function clean(value: string | null | undefined): string {
@@ -32,7 +34,9 @@ export function extractIngredients(meal: RawMeal): Ingredient[] {
 export function splitInstructions(text: string | null | undefined): string[] {
   const lines = clean(text)
     .split(/\r?\n/)
-    .map((line) => line.trim().replace(STEP_HEADING, '').replace(NUMBERED_LINE, '').trim())
+    .map((line) =>
+      line.trim().replace(BULLET, '').replace(STEP_HEADING, '').replace(NUMBERED_LINE, '').trim(),
+    )
     .filter((line) => line !== '')
 
   if (lines.length === 1) {

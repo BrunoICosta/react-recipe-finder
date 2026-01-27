@@ -34,6 +34,22 @@ describe('splitInstructions', () => {
     expect(splitInstructions(text)).toEqual(['Chop the onion.', 'Fry it.', 'Serve hot.'])
   })
 
+  it('strips leading bullets and checkbox glyphs', () => {
+    const text = '*Meanwhile, steam the vegetables.\n▢ Add the rice.\n• Serve.'
+    expect(splitInstructions(text)).toEqual([
+      'Meanwhile, steam the vegetables.',
+      'Add the rice.',
+      'Serve.',
+    ])
+  })
+
+  it('treats a dash as a bullet only when followed by a space', () => {
+    expect(splitInstructions('- Freeze for 2 hours.\n-18 °C is ideal.')).toEqual([
+      'Freeze for 2 hours.',
+      '-18 °C is ideal.',
+    ])
+  })
+
   it('splits a single paragraph into sentences', () => {
     expect(splitInstructions('Boil water. Add pasta! Drain it.')).toEqual([
       'Boil water.',
