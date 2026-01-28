@@ -4,7 +4,8 @@ import { useAsync } from '@/core/hooks/useAsync'
 import { useDocumentTitle } from '@/core/hooks/useDocumentTitle'
 import { FavoriteButton } from '@/features/favorites/FavoriteButton'
 import { RecipeCard } from '@/shared/components/RecipeCard'
-import { RecipeGrid, RecipeGridSkeleton } from '@/shared/components/RecipeGrid'
+import { PagedRecipeGrid } from '@/shared/components/PagedRecipeGrid'
+import { RecipeGridSkeleton } from '@/shared/components/RecipeGrid'
 import { EmptyState, ErrorState } from '@/shared/components/StateMessage'
 import { SearchBar } from './SearchBar'
 import { SearchModeToggle } from './SearchModeToggle'
@@ -109,18 +110,19 @@ export default function SearchPage() {
                 {pluralize(data.length)}{' '}
                 {mode === 'ingrediente' ? `com “${query}”` : `para “${query}”`}
               </p>
-              <RecipeGrid label={`Receitas para ${query}`}>
-                {data.map((recipe) => (
+              <PagedRecipeGrid
+                items={data}
+                label={`Receitas para ${query}`}
+                renderItem={(recipe) => (
                   <RecipeCard
-                    key={recipe.id}
                     to={`/receita/${recipe.id}`}
                     name={recipe.name}
                     thumbnail={recipe.thumbnail}
                     meta={recipe.meta}
                     action={<FavoriteButton recipe={recipe} variant="icon" />}
                   />
-                ))}
-              </RecipeGrid>
+                )}
+              />
             </>
           ))}
       </section>

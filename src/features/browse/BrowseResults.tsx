@@ -8,7 +8,8 @@ import { FavoriteButton } from '@/features/favorites/FavoriteButton'
 import { BackButton } from '@/shared/components/BackButton'
 import { PageHeader } from '@/shared/components/PageHeader'
 import { RecipeCard } from '@/shared/components/RecipeCard'
-import { RecipeGrid, RecipeGridSkeleton } from '@/shared/components/RecipeGrid'
+import { PagedRecipeGrid } from '@/shared/components/PagedRecipeGrid'
+import { RecipeGridSkeleton } from '@/shared/components/RecipeGrid'
 import { EmptyState, ErrorState } from '@/shared/components/StateMessage'
 import { categoryLabel } from '@/shared/utils/labels'
 import styles from './Browse.module.css'
@@ -85,20 +86,23 @@ export function BrowseResults({ kind }: { kind: BrowseKind }) {
             description="A base de dados ainda não tem receitas para esta seleção."
           />
         ) : (
-          <RecipeGrid label={`Receitas: ${title}`}>
-            {data.map((recipe) => {
-              const favorite = { ...recipe, ...config.toFavorite(value) }
-              return (
-                <RecipeCard
-                  key={recipe.id}
-                  to={`/receita/${recipe.id}`}
-                  name={recipe.name}
-                  thumbnail={recipe.thumbnail}
-                  action={<FavoriteButton recipe={favorite} variant="icon" />}
-                />
-              )
-            })}
-          </RecipeGrid>
+          <PagedRecipeGrid
+            items={data}
+            label={`Receitas: ${title}`}
+            renderItem={(recipe) => (
+              <RecipeCard
+                to={`/receita/${recipe.id}`}
+                name={recipe.name}
+                thumbnail={recipe.thumbnail}
+                action={
+                  <FavoriteButton
+                    recipe={{ ...recipe, ...config.toFavorite(value) }}
+                    variant="icon"
+                  />
+                }
+              />
+            )}
+          />
         ))}
     </div>
   )
