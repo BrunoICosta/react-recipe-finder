@@ -186,12 +186,16 @@
 
 .ingredientText {
   display: grid;
+  min-width: 0;
   line-height: 1.3;
 }
 
 .ingredientName {
   font-weight: 500;
-  text-transform: capitalize;
+}
+
+.ingredientName::first-letter {
+  text-transform: uppercase;
 }
 
 .ingredientMeasure {
