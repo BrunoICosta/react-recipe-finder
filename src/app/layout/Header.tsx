@@ -4,6 +4,7 @@ import { Link, NavLink, useLocation } from 'react-router'
 import { ChefHatIcon, CloseIcon, MenuIcon } from '@/shared/components/icons'
 import { useFavorites } from '@/features/favorites/useFavorites'
 import { RandomRecipeButton } from '@/features/random/RandomRecipeButton'
+import { LanguageSwitcher } from './LanguageSwitcher'
 import { ThemeToggle } from './ThemeToggle'
 import styles from './Header.module.css'
 
@@ -98,6 +99,9 @@ export function Header() {
               </li>
             ))}
           </ul>
+          <div className={styles.language}>
+            <LanguageSwitcher />
+          </div>
         </nav>
       </div>
     </header>
