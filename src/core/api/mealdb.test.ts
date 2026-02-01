@@ -87,6 +87,6 @@ describe('mealdb client', () => {
 
   it('wraps network failures in an ApiError', async () => {
     fetchMock.mockRejectedValueOnce(new TypeError('Failed to fetch'))
-    await expect(searchRecipesByName('x')).rejects.toThrow(/conectar ao servidor/)
+    await expect(searchRecipesByName('x')).rejects.toMatchObject({ code: 'network' })
   })
 })

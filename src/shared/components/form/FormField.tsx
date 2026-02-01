@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import styles from './Form.module.css'
+import { useTranslation } from 'react-i18next'
 
 interface FormFieldProps {
   id: string
@@ -11,6 +12,7 @@ interface FormFieldProps {
 }
 
 export function FormField({ id, label, error, hint, required, children }: FormFieldProps) {
+  const { t } = useTranslation()
   return (
     <div className={styles.field}>
       <label htmlFor={id} className={styles.label}>
@@ -21,7 +23,7 @@ export function FormField({ id, label, error, hint, required, children }: FormFi
             *
           </span>
         ) : (
-          <span className={styles.optional}> (opcional)</span>
+          <span className={styles.optional}> {t('form.optional')}</span>
         )}
       </label>
       {children}

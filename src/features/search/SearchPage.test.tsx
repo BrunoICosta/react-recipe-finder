@@ -65,10 +65,12 @@ describe('SearchPage', () => {
   })
 
   it('shows the error and retries', async () => {
-    byName.mockRejectedValueOnce(new ApiError('Servidor fora do ar.')).mockResolvedValueOnce([])
+    byName.mockRejectedValueOnce(new ApiError('http', 'Server down', 503)).mockResolvedValueOnce([])
     const { user } = renderWithRouter(<SearchPage />, { route: '/?q=pasta' })
 
-    expect(await screen.findByRole('alert')).toHaveTextContent('Servidor fora do ar.')
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'O servidor respondeu com erro (503).',
+    )
 
     await user.click(screen.getByRole('button', { name: 'Tentar novamente' }))
     await waitFor(() => expect(byName).toHaveBeenCalledTimes(2))

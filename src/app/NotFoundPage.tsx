@@ -1,20 +1,22 @@
 import { Link } from 'react-router'
 import { useDocumentTitle } from '@/core/hooks/useDocumentTitle'
 import styles from './StatusPage.module.css'
+import { useTranslation } from 'react-i18next'
 
 export default function NotFoundPage() {
-  useDocumentTitle('Página não encontrada')
+  const { t } = useTranslation()
+  useDocumentTitle(t('notFound.title'))
 
   return (
     <section className={`container ${styles.page}`}>
       <p className={styles.code} aria-hidden="true">
         404
       </p>
-      <h1>Página não encontrada</h1>
-      <p className={styles.text}>O endereço que você acessou não existe ou foi removido.</p>
+      <h1>{t('notFound.title')}</h1>
+      <p className={styles.text}>{t('notFound.description')}</p>
       <div className={styles.actions}>
         <Link to="/" className="btn btn--primary">
-          Buscar receitas
+          {t('actions.searchRecipes')}
         </Link>
       </div>
     </section>

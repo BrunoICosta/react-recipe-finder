@@ -1,0 +1,76 @@
+const common = {
+  app: {
+    name: 'Receitário',
+    tagline: 'encontre sua próxima receita',
+  },
+  nav: {
+    label: 'Principal',
+    search: 'Buscar',
+    categories: 'Categorias',
+    cuisines: 'Cozinhas',
+    favorites: 'Favoritas',
+    myRecipes: 'Minhas receitas',
+    favoritesBadge_one: '{{count}} salva',
+    favoritesBadge_other: '{{count}} salvas',
+    openMenu: 'Abrir menu',
+    closeMenu: 'Fechar menu',
+  },
+  layout: {
+    skipToContent: 'Pular para o conteúdo',
+    footerData: 'Dados de receitas por',
+    footerAuthor: 'Feito por',
+  },
+  theme: {
+    toDark: 'Ativar tema escuro',
+    toLight: 'Ativar tema claro',
+    darkTitle: 'Tema escuro',
+    lightTitle: 'Tema claro',
+  },
+  random: {
+    label: 'Surpreenda-me',
+    loading: 'Sorteando…',
+    retry: 'Tentar de novo',
+    title: 'Sortear uma receita',
+    error: 'Não foi possível sortear uma receita. Tente novamente.',
+  },
+  actions: {
+    back: 'Voltar',
+    cancel: 'Cancelar',
+    retry: 'Tentar novamente',
+    reload: 'Recarregar',
+    goHome: 'Voltar ao início',
+    searchRecipes: 'Buscar receitas',
+    showMore: 'Mostrar mais',
+    remaining_one: '({{count}} restante)',
+    remaining_other: '({{count}} restantes)',
+    clearSearch: 'Limpar busca',
+    opensInNewTab: '(abre em nova aba)',
+  },
+  status: {
+    loadingPage: 'Carregando página…',
+    loadingRecipes: 'Carregando receitas…',
+  },
+  form: {
+    optional: '(opcional)',
+  },
+  errors: {
+    title: 'Algo deu errado',
+    generic: 'Não foi possível carregar os dados. Tente novamente.',
+    network: 'Não foi possível conectar ao servidor. Verifique sua conexão.',
+    http: 'O servidor respondeu com erro ({{status}}).',
+    parse: 'Resposta inválida do servidor.',
+    routeTitle: 'Não foi possível exibir a página',
+    routeUnexpected: 'Algo inesperado aconteceu ao carregar esta página.',
+  },
+  notFound: {
+    title: 'Página não encontrada',
+    description: 'O endereço que você acessou não existe ou foi removido.',
+  },
+  language: {
+    label: 'Idioma',
+  },
+  recipeCount_one: '{{count}} receita',
+  recipeCount_other: '{{count}} receitas',
+}
+
+export default common

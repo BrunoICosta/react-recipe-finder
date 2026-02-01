@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router'
 import { getRandomRecipe } from '@/core/api/mealdb'
 import { ShuffleIcon } from '@/shared/components/icons'
 import styles from './RandomRecipeButton.module.css'
+import { useTranslation } from 'react-i18next'
 
 type Status = 'idle' | 'loading' | 'error'
 
@@ -12,6 +13,7 @@ interface RandomRecipeButtonProps {
 }
 
 export function RandomRecipeButton({ variant = 'full' }: RandomRecipeButtonProps) {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [status, setStatus] = useState<Status>('idle')
 
@@ -37,15 +39,19 @@ export function RandomRecipeButton({ variant = 'full' }: RandomRecipeButtonProps
         onClick={pickRandom}
         disabled={loading}
         aria-busy={loading}
-        title="Sortear uma receita"
+        title={t('random.title')}
       >
         <ShuffleIcon size={18} className={loading ? styles.spinning : undefined} />
         <span className={styles.label}>
-          {loading ? 'Sorteando…' : status === 'error' ? 'Tentar de novo' : 'Surpreenda-me'}
+          {loading
+            ? t('random.loading')
+            : status === 'error'
+              ? t('random.retry')
+              : t('random.label')}
         </span>
       </button>
       <span className="visually-hidden" role="status" aria-live="polite">
-        {status === 'error' ? 'Não foi possível sortear uma receita. Tente novamente.' : ''}
+        {status === 'error' ? t('random.error') : ''}
       </span>
     </>
   )

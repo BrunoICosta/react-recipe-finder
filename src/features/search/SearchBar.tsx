@@ -1,6 +1,7 @@
 import { useId, type FormEvent } from 'react'
 import { CloseIcon, SearchIcon } from '@/shared/components/icons'
 import styles from './SearchBar.module.css'
+import { useTranslation } from 'react-i18next'
 
 interface SearchBarProps {
   value: string
@@ -12,6 +13,7 @@ interface SearchBarProps {
 }
 
 export function SearchBar({ value, onChange, onSubmit, label, placeholder }: SearchBarProps) {
+  const { t } = useTranslation()
   const inputId = useId()
 
   const handleSubmit = (event: FormEvent) => {
@@ -39,7 +41,7 @@ export function SearchBar({ value, onChange, onSubmit, label, placeholder }: Sea
         <button
           type="button"
           className={`btn btn--sm btn--icon ${styles.clear}`}
-          aria-label="Limpar busca"
+          aria-label={t('actions.clearSearch')}
           onClick={() => onChange('')}
         >
           <CloseIcon size={18} />

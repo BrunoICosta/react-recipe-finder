@@ -19,7 +19,7 @@ const IDLE = { status: 'idle', data: undefined, error: undefined } as const
 const LOADING = { status: 'loading', data: undefined, error: undefined } as const
 
 function toError(error: unknown): Error {
-  return error instanceof Error ? error : new Error('Algo deu errado. Tente novamente.')
+  return error instanceof Error ? error : new Error('Unexpected error')
 }
 
 /**

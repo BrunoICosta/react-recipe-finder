@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from 'react-router'
 import { ArrowLeftIcon } from './icons'
+import { useTranslation } from 'react-i18next'
 
 interface BackButtonProps {
   /** Where to go when the page was opened directly (no in-app history). */
@@ -7,7 +8,8 @@ interface BackButtonProps {
   label?: string
 }
 
-export function BackButton({ fallback, label = 'Voltar' }: BackButtonProps) {
+export function BackButton({ fallback, label }: BackButtonProps) {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
   // React Router marks the first entry of a session with the "default" key.
@@ -20,7 +22,7 @@ export function BackButton({ fallback, label = 'Voltar' }: BackButtonProps) {
       onClick={() => (hasHistory ? navigate(-1) : navigate(fallback))}
     >
       <ArrowLeftIcon size={18} />
-      {label}
+      {label ?? t('actions.back')}
     </button>
   )
 }

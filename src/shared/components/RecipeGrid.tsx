@@ -1,6 +1,7 @@
 import { Children, type ReactNode } from 'react'
 import { Skeleton } from './Skeleton'
 import styles from './RecipeGrid.module.css'
+import { useTranslation } from 'react-i18next'
 
 interface RecipeGridProps {
   children: ReactNode
@@ -18,9 +19,10 @@ export function RecipeGrid({ children, label }: RecipeGridProps) {
 }
 
 export function RecipeGridSkeleton({ count = 8 }: { count?: number }) {
+  const { t } = useTranslation()
   return (
     <div role="status" aria-live="polite">
-      <span className="visually-hidden">Carregando receitas…</span>
+      <span className="visually-hidden">{t('status.loadingRecipes')}</span>
       <ul className={styles.grid} aria-hidden="true">
         {Array.from({ length: count }, (_, index) => (
           <li key={index} className={styles.skeletonCard}>

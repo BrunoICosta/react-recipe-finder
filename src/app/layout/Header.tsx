@@ -1,4 +1,5 @@
 import { useEffect, useId, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, NavLink, useLocation } from 'react-router'
 import { ChefHatIcon, CloseIcon, MenuIcon } from '@/shared/components/icons'
 import { useFavorites } from '@/features/favorites/useFavorites'
@@ -6,22 +7,24 @@ import { RandomRecipeButton } from '@/features/random/RandomRecipeButton'
 import { ThemeToggle } from './ThemeToggle'
 import styles from './Header.module.css'
 
+type NavKey = 'search' | 'categories' | 'cuisines' | 'favorites' | 'myRecipes'
+
 interface NavItem {
   to: string
-  label: string
+  key: NavKey
   end?: boolean
-  badge?: 'favorites'
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { to: '/', label: 'Buscar', end: true },
-  { to: '/categorias', label: 'Categorias' },
-  { to: '/cozinhas', label: 'Cozinhas' },
-  { to: '/favoritas', label: 'Favoritas', badge: 'favorites' },
-  { to: '/minhas-receitas', label: 'Minhas receitas' },
+  { to: '/', key: 'search', end: true },
+  { to: '/categorias', key: 'categories' },
+  { to: '/cozinhas', key: 'cuisines' },
+  { to: '/favoritas', key: 'favorites' },
+  { to: '/minhas-receitas', key: 'myRecipes' },
 ]
 
 export function Header() {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const navId = useId()
   const { pathname } = useLocation()
@@ -51,7 +54,7 @@ export function Header() {
           <span className={styles.logo}>
             <ChefHatIcon size={22} />
           </span>
-          Receitário
+          {t('app.name')}
         </Link>
 
         <div className={styles.actions}>
@@ -64,13 +67,13 @@ export function Header() {
           className={`btn btn--ghost btn--icon ${styles.menuButton}`}
           aria-expanded={open}
           aria-controls={navId}
-          aria-label={open ? 'Fechar menu' : 'Abrir menu'}
+          aria-label={open ? t('nav.closeMenu') : t('nav.openMenu')}
           onClick={() => setOpen((value) => !value)}
         >
           {open ? <CloseIcon /> : <MenuIcon />}
         </button>
 
-        <nav id={navId} className={styles.nav} data-open={open} aria-label="Principal">
+        <nav id={navId} className={styles.nav} data-open={open} aria-label={t('nav.label')}>
           <ul className={styles.navList}>
             {NAV_ITEMS.map((item) => (
               <li key={item.to}>
@@ -81,11 +84,14 @@ export function Header() {
                     isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
                   }
                 >
-                  {item.label}
-                  {item.badge === 'favorites' && favorites.length > 0 && (
+                  {t(`nav.${item.key}`)}
+                  {item.key === 'favorites' && favorites.length > 0 && (
                     <span className={styles.badge}>
-                      {favorites.length}
-                      <span className="visually-hidden"> salvas</span>
+                      <span aria-hidden="true">{favorites.length}</span>
+                      <span className="visually-hidden">
+                        {' '}
+                        ({t('nav.favoritesBadge', { count: favorites.length })})
+                      </span>
                     </span>
                   )}
                 </NavLink>

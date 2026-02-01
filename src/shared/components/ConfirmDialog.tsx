@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef } from 'react'
 import styles from './ConfirmDialog.module.css'
+import { useTranslation } from 'react-i18next'
 
 interface ConfirmDialogProps {
   open: boolean
@@ -22,6 +23,7 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
+  const { t } = useTranslation()
   const ref = useRef<HTMLDialogElement>(null)
   const titleId = useId()
   const descriptionId = useId()
@@ -62,7 +64,7 @@ export function ConfirmDialog({
         </p>
         <div className={styles.actions}>
           <button type="button" className="btn btn--ghost" onClick={onCancel} autoFocus>
-            Cancelar
+            {t('actions.cancel')}
           </button>
           <button type="button" className="btn btn--danger" onClick={onConfirm}>
             {confirmLabel}
