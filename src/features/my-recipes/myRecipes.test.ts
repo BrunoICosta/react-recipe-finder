@@ -27,7 +27,7 @@ describe('recipeFormSchema', () => {
     expect(result.success).toBe(false)
     expect(result.error?.issues[0]).toMatchObject({
       path: ['name'],
-      message: 'O nome precisa ter pelo menos 3 caracteres.',
+      message: 'validation.nameTooShort',
     })
   })
 

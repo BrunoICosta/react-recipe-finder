@@ -1,30 +1,25 @@
 import { searchRecipesByIngredient, searchRecipesByName } from '@/core/api/mealdb'
 import type { RecipeSummary } from '@/core/models/recipe'
 
+/** URL values (`?por=`); the visible labels live in the "search" namespace. */
 export type SearchMode = 'nome' | 'ingrediente'
+
+export const SEARCH_MODE_KEYS: readonly SearchMode[] = ['nome', 'ingrediente']
 
 export interface SearchResult extends RecipeSummary {
   category?: string | null
   area?: string | null
-  meta: (string | null)[]
 }
 
 interface SearchModeConfig {
-  label: string
-  inputLabel: string
-  placeholder: string
+  /** TheMealDB data is in English, so suggestions stay in English in both languages. */
   suggestions: string[]
-  idleTitle: string
   search: (query: string, signal: AbortSignal) => Promise<SearchResult[]>
 }
 
 export const SEARCH_MODES: Record<SearchMode, SearchModeConfig> = {
   nome: {
-    label: 'Nome do prato',
-    inputLabel: 'Buscar receitas pelo nome',
-    placeholder: 'Ex.: lasagne, curry, pancakes…',
     suggestions: ['chicken', 'pasta', 'beef', 'cake', 'salmon', 'soup'],
-    idleTitle: 'Comece digitando o nome de um prato',
     search: async (query, signal) =>
       (await searchRecipesByName(query, signal)).map((recipe) => ({
         id: recipe.id,
@@ -32,17 +27,11 @@ export const SEARCH_MODES: Record<SearchMode, SearchModeConfig> = {
         thumbnail: recipe.thumbnail,
         category: recipe.category,
         area: recipe.area,
-        meta: [recipe.category, recipe.area],
       })),
   },
   ingrediente: {
-    label: 'Ingrediente',
-    inputLabel: 'Buscar receitas por ingrediente',
-    placeholder: 'Ex.: garlic, chicken breast, rice…',
     suggestions: ['garlic', 'chicken breast', 'eggs', 'rice', 'tomatoes', 'potatoes'],
-    idleTitle: 'Digite um ingrediente que você tem em casa',
-    search: async (query, signal) =>
-      (await searchRecipesByIngredient(query, signal)).map((recipe) => ({ ...recipe, meta: [] })),
+    search: (query, signal) => searchRecipesByIngredient(query, signal),
   },
 }
 

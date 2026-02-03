@@ -1,8 +1,10 @@
 import { useDeferredValue, useId, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import { listCuisines } from '@/core/api/mealdb'
 import { useAsync } from '@/core/hooks/useAsync'
 import { useDocumentTitle } from '@/core/hooks/useDocumentTitle'
+import { useTaxonomy } from '@/i18n/useTaxonomy'
 import { SearchIcon } from '@/shared/components/icons'
 import { PageHeader } from '@/shared/components/PageHeader'
 import { Skeleton } from '@/shared/components/Skeleton'
@@ -17,32 +19,45 @@ function normalize(text: string): string {
 }
 
 export default function CuisinesPage() {
-  useDocumentTitle('Cozinhas do mundo')
+  const { t } = useTranslation('browse')
+  const taxonomy = useTaxonomy()
+  useDocumentTitle(t('cuisines.title'))
   const { status, data, error, reload } = useAsync(listCuisines)
   const [filter, setFilter] = useState('')
   const deferredFilter = useDeferredValue(filter)
   const filterId = useId()
 
+  // Countries are shown (and sorted) in the active language; the API name stays the key.
+  const cuisines = useMemo(
+    () =>
+      (data ?? [])
+        .map((name) => ({ name, label: taxonomy.cuisine(name) ?? name }))
+        .sort((a, b) => taxonomy.compare(a.label, b.label)),
+    [data, taxonomy],
+  )
+
   const visible = useMemo(() => {
     const needle = normalize(deferredFilter.trim())
-    return (data ?? []).filter((cuisine) => normalize(cuisine).includes(needle))
-  }, [data, deferredFilter])
+    return cuisines.filter(
+      ({ name, label }) => normalize(label).includes(needle) || normalize(name).includes(needle),
+    )
+  }, [cuisines, deferredFilter])
 
   return (
     <div className="container">
       <PageHeader
-        title="Cozinhas do mundo"
-        description="Escolha um país para descobrir pratos típicos da sua culinária."
+        title={t('cuisines.title')}
+        description={t('cuisines.description')}
         actions={
           <div className={styles.filter}>
             <label htmlFor={filterId} className="visually-hidden">
-              Filtrar países
+              {t('cuisines.filterLabel')}
             </label>
             <SearchIcon size={18} className={styles.filterIcon} />
             <input
               id={filterId}
               type="search"
-              placeholder="Filtrar países (em inglês)…"
+              placeholder={t('cuisines.filterPlaceholder')}
               value={filter}
               onChange={(event) => setFilter(event.target.value)}
             />
@@ -52,7 +67,7 @@ export default function CuisinesPage() {
 
       {status === 'loading' && (
         <div role="status">
-          <span className="visually-hidden">Carregando cozinhas…</span>
+          <span className="visually-hidden">{t('cuisines.loading')}</span>
           <ul className={styles.chips} aria-hidden="true">
             {Array.from({ length: 24 }, (_, index) => (
               <li key={index}>
@@ -68,21 +83,15 @@ export default function CuisinesPage() {
       {status === 'success' &&
         (visible.length === 0 ? (
           <EmptyState
-            title={
-              filter ? `Nenhum país encontrado para “${filter}”` : 'Nenhuma cozinha disponível'
-            }
-            description={filter ? 'Os nomes estão em inglês, por exemplo “Brazil”.' : undefined}
+            title={filter ? t('cuisines.noMatch', { filter }) : t('cuisines.empty')}
+            description={filter ? t('cuisines.noMatchHint') : undefined}
           />
         ) : (
-          <ul className={styles.chips} aria-label="Países">
-            {visible.map((cuisine) => (
-              <li key={cuisine}>
-                <Link
-                  to={`/cozinhas/${encodeURIComponent(cuisine)}`}
-                  className={styles.chip}
-                  lang="en"
-                >
-                  {cuisine}
+          <ul className={styles.chips} aria-label={t('cuisines.listLabel')}>
+            {visible.map(({ name, label }) => (
+              <li key={name}>
+                <Link to={`/cozinhas/${encodeURIComponent(name)}`} className={styles.chip}>
+                  {label}
                 </Link>
               </li>
             ))}

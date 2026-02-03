@@ -23,14 +23,14 @@ describe('RecipeDetail', () => {
     expect(steps[2]).toHaveTextContent('Bake for 35 minutes.')
   })
 
-  it('links the category (translated), cuisine and YouTube video', () => {
+  it('links the translated category and cuisine and the YouTube video', () => {
     renderWithRouter(<RecipeDetail recipe={recipe} />)
 
     expect(screen.getByRole('link', { name: 'Frango' })).toHaveAttribute(
       'href',
       '/categorias/Chicken',
     )
-    expect(screen.getByRole('link', { name: 'Japanese' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: 'Japão' })).toHaveAttribute(
       'href',
       '/cozinhas/Japanese',
     )

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useParams } from 'react-router'
 import { useDocumentTitle } from '@/core/hooks/useDocumentTitle'
 import { BackButton } from '@/shared/components/BackButton'
@@ -22,23 +23,24 @@ function toFormValues(recipe: UserRecipe): RecipeFormInput {
 
 /** Handles both /minhas-receitas/nova and /minhas-receitas/:id/editar. */
 export default function RecipeEditorPage() {
+  const { t } = useTranslation('myRecipes')
   const { id } = useParams()
   const navigate = useNavigate()
   const { getRecipe, createRecipe, updateRecipe } = useMyRecipes()
   const existing = id ? getRecipe(id) : null
   const isEditing = Boolean(id)
 
-  useDocumentTitle(isEditing ? 'Editar receita' : 'Nova receita')
+  useDocumentTitle(isEditing ? t('editor.editDocumentTitle') : t('editor.newTitle'))
 
   if (isEditing && !existing) {
     return (
       <div className="container">
         <EmptyState
-          title="Receita não encontrada"
-          description="Ela pode ter sido excluída ou criada em outro navegador."
+          title={t('notFound.title')}
+          description={t('notFound.description')}
           action={
             <Link to="/minhas-receitas" className="btn btn--primary">
-              Ver minhas receitas
+              {t('notFound.action')}
             </Link>
           }
         />
@@ -64,13 +66,13 @@ export default function RecipeEditorPage() {
         <BackButton fallback={backTo} />
       </div>
       <PageHeader
-        title={existing ? `Editar “${existing.name}”` : 'Nova receita'}
-        description="Campos marcados com * são obrigatórios."
+        title={existing ? t('editor.editTitle', { name: existing.name }) : t('editor.newTitle')}
+        description={t('editor.requiredHint')}
       />
       <RecipeForm
         key={existing?.id ?? 'new'}
         defaultValues={existing ? toFormValues(existing) : undefined}
-        submitLabel={existing ? 'Salvar alterações' : 'Criar receita'}
+        submitLabel={existing ? t('editor.save') : t('editor.create')}
         onSubmit={handleSubmit}
         onCancel={() => navigate(backTo)}
       />

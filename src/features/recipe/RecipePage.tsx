@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, useParams } from 'react-router'
 import { getRecipe } from '@/core/api/mealdb'
 import { useAsync } from '@/core/hooks/useAsync'
@@ -11,11 +12,12 @@ import { RecipeDetailSkeleton } from './components/RecipeDetailSkeleton'
 import styles from './RecipePage.module.css'
 
 export default function RecipePage() {
+  const { t } = useTranslation('recipe')
   const { id = '' } = useParams()
   const fetcher = useMemo(() => (signal: AbortSignal) => getRecipe(id, signal), [id])
   const { status, data, error, reload } = useAsync(fetcher)
 
-  useDocumentTitle(status === 'success' ? (data?.name ?? 'Receita não encontrada') : null)
+  useDocumentTitle(status === 'success' ? (data?.name ?? t('notFound.title')) : null)
 
   return (
     <div className={`container ${styles.page}`}>
@@ -25,20 +27,18 @@ export default function RecipePage() {
 
       {status === 'loading' && <RecipeDetailSkeleton />}
 
-      {status === 'error' && (
-        <ErrorState title="Não foi possível carregar a receita" error={error} onRetry={reload} />
-      )}
+      {status === 'error' && <ErrorState title={t('loadError')} error={error} onRetry={reload} />}
 
       {status === 'success' &&
         (data ? (
           <RecipeDetail key={data.id} recipe={data} actions={<FavoriteButton recipe={data} />} />
         ) : (
           <EmptyState
-            title="Receita não encontrada"
-            description="Ela pode ter sido removida da base de dados."
+            title={t('notFound.title')}
+            description={t('notFound.description')}
             action={
               <Link to="/" className="btn btn--primary">
-                Buscar outras receitas
+                {t('notFound.action')}
               </Link>
             }
           />

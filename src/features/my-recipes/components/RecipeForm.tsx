@@ -1,11 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useId } from 'react'
 import { useFieldArray, useForm, useWatch } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { describedBy } from '@/shared/components/form/describedBy'
 import { FieldError, FormField } from '@/shared/components/form/FormField'
 import formStyles from '@/shared/components/form/Form.module.css'
 import { PlusIcon, TrashIcon } from '@/shared/components/icons'
-import { categoryLabel } from '@/shared/utils/labels'
+import { useTaxonomy } from '@/i18n/useTaxonomy'
 import {
   EMPTY_RECIPE_FORM,
   MAX_INGREDIENTS,
@@ -13,6 +14,7 @@ import {
   type RecipeFormInput,
   type RecipeFormValues,
 } from '../schema'
+import { useValidationMessage } from '../useValidationMessage'
 import styles from './RecipeForm.module.css'
 
 const CATEGORY_SUGGESTIONS = [
@@ -43,6 +45,9 @@ export function RecipeForm({
   onSubmit,
   onCancel,
 }: RecipeFormProps) {
+  const { t } = useTranslation(['myRecipes', 'common'])
+  const taxonomy = useTaxonomy()
+  const message = useValidationMessage()
   const uid = useId()
   const id = (name: string) => `${uid}-${name}`
 
@@ -61,14 +66,19 @@ export function RecipeForm({
   const thumbnail = useWatch({ control, name: 'thumbnail' })
   const canPreview = !errors.thumbnail && /^https?:\/\/\S+$/.test(thumbnail.trim())
 
-  const ingredientsError = errors.ingredients?.root?.message ?? errors.ingredients?.message
+  const ingredientsError = message(errors.ingredients?.root?.message ?? errors.ingredients?.message)
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
       <fieldset className={styles.section}>
-        <legend className={styles.legend}>Informações básicas</legend>
+        <legend className={styles.legend}>{t('form.basics')}</legend>
 
-        <FormField id={id('name')} label="Nome da receita" required error={errors.name?.message}>
+        <FormField
+          id={id('name')}
+          label={t('form.name')}
+          required
+          error={message(errors.name?.message)}
+        >
           <input
             id={id('name')}
             className={formStyles.control}
@@ -82,9 +92,9 @@ export function RecipeForm({
         <div className={styles.row}>
           <FormField
             id={id('category')}
-            label="Categoria"
-            hint="Escolha uma sugestão ou digite livremente."
-            error={errors.category?.message}
+            label={t('form.category')}
+            hint={t('form.categoryHint')}
+            error={message(errors.category?.message)}
           >
             <input
               id={id('category')}
@@ -101,17 +111,17 @@ export function RecipeForm({
             <datalist id={id('category-list')}>
               {CATEGORY_SUGGESTIONS.map((category) => (
                 <option key={category} value={category}>
-                  {categoryLabel(category)}
+                  {taxonomy.category(category)}
                 </option>
               ))}
             </datalist>
           </FormField>
 
-          <FormField id={id('area')} label="Cozinha / país" error={errors.area?.message}>
+          <FormField id={id('area')} label={t('form.area')} error={message(errors.area?.message)}>
             <input
               id={id('area')}
               className={formStyles.control}
-              placeholder="Ex.: Brazil"
+              placeholder={t('form.areaPlaceholder')}
               autoComplete="off"
               aria-invalid={Boolean(errors.area)}
               aria-describedby={describedBy(id('area'), { error: errors.area })}
@@ -123,8 +133,8 @@ export function RecipeForm({
         <div className={styles.row}>
           <FormField
             id={id('thumbnail')}
-            label="Endereço da imagem"
-            error={errors.thumbnail?.message}
+            label={t('form.thumbnail')}
+            error={message(errors.thumbnail?.message)}
           >
             <input
               id={id('thumbnail')}
@@ -138,7 +148,11 @@ export function RecipeForm({
             />
           </FormField>
 
-          <FormField id={id('youtube')} label="Vídeo no YouTube" error={errors.youtubeUrl?.message}>
+          <FormField
+            id={id('youtube')}
+            label={t('form.youtube')}
+            error={message(errors.youtubeUrl?.message)}
+          >
             <input
               id={id('youtube')}
               type="url"
@@ -156,7 +170,7 @@ export function RecipeForm({
           <img
             className={styles.preview}
             src={thumbnail.trim()}
-            alt="Pré-visualização da imagem da receita"
+            alt={t('form.preview')}
             width={160}
             height={120}
           />
@@ -168,7 +182,7 @@ export function RecipeForm({
         aria-describedby={ingredientsError ? id('ingredients-error') : undefined}
       >
         <legend className={styles.legend}>
-          Ingredientes <span className={styles.counter}>({fields.length})</span>
+          {t('form.ingredients')} <span className={styles.counter}>({fields.length})</span>
         </legend>
 
         <ol className={styles.ingredients}>
@@ -183,36 +197,42 @@ export function RecipeForm({
                 </span>
                 <div className={formStyles.field}>
                   <label htmlFor={nameId} className="visually-hidden">
-                    Ingrediente {index + 1}
+                    {t('form.ingredientLabel', { index: index + 1 })}
                   </label>
                   <input
                     id={nameId}
                     className={formStyles.control}
-                    placeholder="Ingrediente"
+                    placeholder={t('form.ingredientPlaceholder')}
                     autoComplete="off"
                     aria-invalid={Boolean(fieldErrors?.name)}
                     aria-describedby={describedBy(nameId, { error: fieldErrors?.name })}
                     {...register(`ingredients.${index}.name`)}
                   />
                   {fieldErrors?.name?.message && (
-                    <FieldError id={`${nameId}-error`} message={fieldErrors.name.message} />
+                    <FieldError
+                      id={`${nameId}-error`}
+                      message={message(fieldErrors.name.message) ?? ''}
+                    />
                   )}
                 </div>
                 <div className={formStyles.field}>
                   <label htmlFor={measureId} className="visually-hidden">
-                    Quantidade do ingrediente {index + 1}
+                    {t('form.measureLabel', { index: index + 1 })}
                   </label>
                   <input
                     id={measureId}
                     className={formStyles.control}
-                    placeholder="Quantidade"
+                    placeholder={t('form.measurePlaceholder')}
                     autoComplete="off"
                     aria-invalid={Boolean(fieldErrors?.measure)}
                     aria-describedby={describedBy(measureId, { error: fieldErrors?.measure })}
                     {...register(`ingredients.${index}.measure`)}
                   />
                   {fieldErrors?.measure?.message && (
-                    <FieldError id={`${measureId}-error`} message={fieldErrors.measure.message} />
+                    <FieldError
+                      id={`${measureId}-error`}
+                      message={message(fieldErrors.measure.message) ?? ''}
+                    />
                   )}
                 </div>
                 <button
@@ -220,8 +240,8 @@ export function RecipeForm({
                   className="btn btn--ghost btn--icon"
                   onClick={() => remove(index)}
                   disabled={fields.length === 1}
-                  aria-label={`Remover ingrediente ${index + 1}`}
-                  title="Remover"
+                  aria-label={t('form.removeIngredient', { index: index + 1 })}
+                  title={t('form.remove')}
                 >
                   <TrashIcon size={18} />
                 </button>
@@ -240,19 +260,19 @@ export function RecipeForm({
             disabled={fields.length >= MAX_INGREDIENTS}
           >
             <PlusIcon size={18} />
-            Adicionar ingrediente
+            {t('form.addIngredient')}
           </button>
         </div>
       </fieldset>
 
       <fieldset className={styles.section}>
-        <legend className={styles.legend}>Modo de preparo</legend>
+        <legend className={styles.legend}>{t('form.method')}</legend>
         <FormField
           id={id('instructions')}
-          label="Instruções"
+          label={t('form.instructions')}
           required
-          hint="Escreva uma etapa por linha; cada linha vira um passo numerado."
-          error={errors.instructions?.message}
+          hint={t('form.instructionsHint')}
+          error={message(errors.instructions?.message)}
         >
           <textarea
             id={id('instructions')}
@@ -270,7 +290,7 @@ export function RecipeForm({
 
       <div className={styles.actions}>
         <button type="button" className="btn btn--ghost" onClick={onCancel}>
-          Cancelar
+          {t('common:actions.cancel')}
         </button>
         <button type="submit" className="btn btn--primary" disabled={isSubmitting}>
           {submitLabel}

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { HeartIcon } from '@/shared/components/icons'
 import { useFavorites, type FavoriteInput } from './useFavorites'
 import styles from './FavoriteButton.module.css'
@@ -11,7 +12,8 @@ interface FavoriteButtonProps {
 export function FavoriteButton({ recipe, variant = 'full' }: FavoriteButtonProps) {
   const { isFavorite, toggleFavorite } = useFavorites()
   const active = isFavorite(recipe.id)
-  const label = active ? 'Remover das favoritas' : 'Salvar nas favoritas'
+  const { t } = useTranslation('favorites')
+  const label = active ? t('remove') : t('add')
 
   if (variant === 'icon') {
     return (
@@ -19,7 +21,7 @@ export function FavoriteButton({ recipe, variant = 'full' }: FavoriteButtonProps
         type="button"
         className={styles.iconButton}
         aria-pressed={active}
-        aria-label={`${label}: ${recipe.name}`}
+        aria-label={t('iconLabel', { action: label, name: recipe.name })}
         title={label}
         onClick={() => toggleFavorite(recipe)}
       >
@@ -36,7 +38,7 @@ export function FavoriteButton({ recipe, variant = 'full' }: FavoriteButtonProps
       onClick={() => toggleFavorite(recipe)}
     >
       <HeartIcon size={18} fill={active ? 'currentColor' : 'none'} />
-      {active ? 'Favorita' : 'Favoritar'}
+      {active ? t('favorited') : t('favorite')}
     </button>
   )
 }

@@ -1,10 +1,12 @@
+import { useTranslation } from 'react-i18next'
 import { Skeleton } from '@/shared/components/Skeleton'
 import styles from './RecipeDetail.module.css'
 
 export function RecipeDetailSkeleton() {
+  const { t } = useTranslation('recipe')
   return (
     <div className={styles.detail} role="status">
-      <span className="visually-hidden">Carregando receita…</span>
+      <span className="visually-hidden">{t('loading')}</span>
       <div className={styles.hero} aria-hidden="true">
         <Skeleton className={styles.media} />
         <div className={styles.skeleton}>

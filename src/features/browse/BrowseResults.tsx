@@ -1,27 +1,25 @@
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 import { getRecipesByCategory, getRecipesByCuisine } from '@/core/api/mealdb'
 import type { RecipeSummary } from '@/core/models/recipe'
 import { useAsync } from '@/core/hooks/useAsync'
 import { useDocumentTitle } from '@/core/hooks/useDocumentTitle'
 import { FavoriteButton } from '@/features/favorites/FavoriteButton'
+import { useTaxonomy } from '@/i18n/useTaxonomy'
 import { BackButton } from '@/shared/components/BackButton'
 import { PageHeader } from '@/shared/components/PageHeader'
 import { RecipeCard } from '@/shared/components/RecipeCard'
 import { PagedRecipeGrid } from '@/shared/components/PagedRecipeGrid'
 import { RecipeGridSkeleton } from '@/shared/components/RecipeGrid'
 import { EmptyState, ErrorState } from '@/shared/components/StateMessage'
-import { categoryLabel } from '@/shared/utils/labels'
 import styles from './Browse.module.css'
 
 export type BrowseKind = 'category' | 'cuisine'
 
 interface BrowseConfig {
   param: string
-  eyebrow: string
   backTo: string
-  backLabel: string
-  label: (value: string) => string
   load: (value: string, signal: AbortSignal) => Promise<RecipeSummary[]>
   toFavorite: (value: string) => { category?: string; area?: string }
 }
@@ -29,19 +27,13 @@ interface BrowseConfig {
 const CONFIG: Record<BrowseKind, BrowseConfig> = {
   category: {
     param: 'category',
-    eyebrow: 'Categoria',
     backTo: '/categorias',
-    backLabel: 'Todas as categorias',
-    label: categoryLabel,
     load: getRecipesByCategory,
     toFavorite: (category) => ({ category }),
   },
   cuisine: {
     param: 'cuisine',
-    eyebrow: 'Cozinha',
     backTo: '/cozinhas',
-    backLabel: 'Todas as cozinhas',
-    label: (cuisine) => cuisine,
     load: getRecipesByCuisine,
     toFavorite: (area) => ({ area }),
   },
@@ -49,9 +41,11 @@ const CONFIG: Record<BrowseKind, BrowseConfig> = {
 
 /** Recipe list for a single category or cuisine. */
 export function BrowseResults({ kind }: { kind: BrowseKind }) {
+  const { t } = useTranslation(['browse', 'common'])
+  const taxonomy = useTaxonomy()
   const config = CONFIG[kind]
   const value = useParams()[config.param] ?? ''
-  const title = config.label(value)
+  const title = (kind === 'category' ? taxonomy.category(value) : taxonomy.cuisine(value)) ?? value
   useDocumentTitle(title)
 
   const fetcher = useMemo(
@@ -63,14 +57,14 @@ export function BrowseResults({ kind }: { kind: BrowseKind }) {
   return (
     <div className="container">
       <div className={styles.back}>
-        <BackButton fallback={config.backTo} label={config.backLabel} />
+        <BackButton fallback={config.backTo} label={t(`results.${kind}.back`)} />
       </div>
       <PageHeader
-        eyebrow={config.eyebrow}
+        eyebrow={t(`results.${kind}.eyebrow`)}
         title={title}
         description={
           status === 'success' && data.length > 0
-            ? `${data.length} ${data.length === 1 ? 'receita' : 'receitas'}`
+            ? t('common:recipeCount', { count: data.length })
             : undefined
         }
       />
@@ -81,14 +75,11 @@ export function BrowseResults({ kind }: { kind: BrowseKind }) {
 
       {status === 'success' &&
         (data.length === 0 ? (
-          <EmptyState
-            title="Nenhuma receita por aqui ainda"
-            description="A base de dados ainda não tem receitas para esta seleção."
-          />
+          <EmptyState title={t('results.emptyTitle')} description={t('results.emptyDescription')} />
         ) : (
           <PagedRecipeGrid
             items={data}
-            label={`Receitas: ${title}`}
+            label={t('results.listLabel', { title })}
             renderItem={(recipe) => (
               <RecipeCard
                 to={`/receita/${recipe.id}`}

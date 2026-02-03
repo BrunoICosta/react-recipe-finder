@@ -1,0 +1,65 @@
+import type ptMyRecipes from '../pt-BR/myRecipes'
+
+const myRecipes: typeof ptMyRecipes = {
+  list: {
+    title: 'My recipes',
+    description: 'Write down your own recipes. They are saved in this browser only.',
+    newRecipe: 'New recipe',
+    emptyTitle: 'Your recipe book is empty',
+    emptyDescription: 'How about writing down that family recipe nobody should ever forget?',
+    updatedAt: 'Updated on {{date}}',
+  },
+  notFound: {
+    title: 'Recipe not found',
+    description: 'It may have been deleted or created in another browser.',
+    action: 'See my recipes',
+  },
+  detail: {
+    edit: 'Edit',
+    delete: 'Delete',
+    confirmTitle: 'Delete recipe?',
+    confirmDescription: '“{{name}}” will be removed from this browser. This cannot be undone.',
+  },
+  editor: {
+    newTitle: 'New recipe',
+    editDocumentTitle: 'Edit recipe',
+    editTitle: 'Edit “{{name}}”',
+    requiredHint: 'Fields marked with * are required.',
+    create: 'Create recipe',
+    save: 'Save changes',
+  },
+  form: {
+    basics: 'Basic information',
+    name: 'Recipe name',
+    category: 'Category',
+    categoryHint: 'Pick a suggestion or type freely.',
+    area: 'Cuisine / country',
+    areaPlaceholder: 'E.g. Brazil',
+    thumbnail: 'Image URL',
+    youtube: 'YouTube video',
+    preview: 'Preview of the recipe image',
+    ingredients: 'Ingredients',
+    ingredientLabel: 'Ingredient {{index}}',
+    ingredientPlaceholder: 'Ingredient',
+    measureLabel: 'Amount of ingredient {{index}}',
+    measurePlaceholder: 'Amount',
+    removeIngredient: 'Remove ingredient {{index}}',
+    remove: 'Remove',
+    addIngredient: 'Add ingredient',
+    method: 'Method',
+    instructions: 'Instructions',
+    instructionsHint: 'Write one step per line; each line becomes a numbered step.',
+  },
+  validation: {
+    nameTooShort: 'The name must have at least 3 characters.',
+    tooLong: 'Use at most {{max}} characters.',
+    ingredientRequired: 'Enter the ingredient.',
+    ingredientsMin: 'Add at least one ingredient.',
+    ingredientsMax: 'Use at most {{max}} ingredients.',
+    invalidImageUrl: 'Enter a valid image URL (http or https).',
+    invalidYoutubeUrl: 'Enter a valid YouTube link.',
+    instructionsTooShort: 'Describe the method (at least 20 characters).',
+  },
+}
+
+export default myRecipes

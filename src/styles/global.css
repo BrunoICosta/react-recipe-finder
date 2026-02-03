@@ -113,6 +113,7 @@ textarea {
   font-weight: 600;
   font-size: 0.95rem;
   text-decoration: none;
+  white-space: nowrap;
   cursor: pointer;
   transition:
     background-color var(--transition),

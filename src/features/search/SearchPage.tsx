@@ -1,8 +1,10 @@
 import { useCallback, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router'
 import { useAsync } from '@/core/hooks/useAsync'
 import { useDocumentTitle } from '@/core/hooks/useDocumentTitle'
 import { FavoriteButton } from '@/features/favorites/FavoriteButton'
+import { useTaxonomy } from '@/i18n/useTaxonomy'
 import { RecipeCard } from '@/shared/components/RecipeCard'
 import { PagedRecipeGrid } from '@/shared/components/PagedRecipeGrid'
 import { RecipeGridSkeleton } from '@/shared/components/RecipeGrid'
@@ -13,16 +15,13 @@ import { parseSearchMode, SEARCH_MODES, type SearchMode } from './searchModes'
 import { useSearchQuery } from './useSearchQuery'
 import styles from './SearchPage.module.css'
 
-function pluralize(count: number): string {
-  return count === 1 ? '1 receita' : `${count} receitas`
-}
-
 export default function SearchPage() {
+  const { t } = useTranslation('search')
+  const taxonomy = useTaxonomy()
   const [params, setParams] = useSearchParams()
   const mode = parseSearchMode(params.get('por'))
-  const config = SEARCH_MODES[mode]
   const { term, setTerm, query, submit, apply } = useSearchQuery()
-  useDocumentTitle(query ? `Busca: ${query}` : null)
+  useDocumentTitle(query ? t('title', { query }) : null)
 
   const setMode = useCallback(
     (next: SearchMode) => {
@@ -48,27 +47,26 @@ export default function SearchPage() {
   return (
     <div className="container">
       <section className={styles.hero}>
-        <p className={styles.eyebrow}>Receitas do mundo todo</p>
-        <h1 className={styles.title}>O que vamos cozinhar hoje?</h1>
-        <p className={styles.subtitle}>
-          Busque pelo nome do prato ou pelo ingrediente que está na sua geladeira.
-        </p>
+        <p className={styles.eyebrow}>{t('hero.eyebrow')}</p>
+        <h1 className={styles.title}>{t('hero.title')}</h1>
+        <p className={styles.subtitle}>{t('hero.subtitle')}</p>
         <div className={styles.search}>
           <SearchModeToggle value={mode} onChange={setMode} />
           <SearchBar
             value={term}
             onChange={setTerm}
             onSubmit={submit}
-            label={config.inputLabel}
-            placeholder={config.placeholder}
+            label={t(`modes.${mode}.inputLabel`)}
+            placeholder={t(`modes.${mode}.placeholder`)}
           />
         </div>
         <p className={styles.hint}>
-          A base de receitas está em inglês. Experimente:
-          {config.suggestions.map((suggestion) => (
+          {t('hint')}
+          {SEARCH_MODES[mode].suggestions.map((suggestion) => (
             <button
               key={suggestion}
               type="button"
+              lang="en"
               className={styles.suggestion}
               onClick={() => apply(suggestion)}
             >
@@ -80,14 +78,11 @@ export default function SearchPage() {
 
       <section aria-labelledby="search-results-title" className={styles.results}>
         <h2 id="search-results-title" className="visually-hidden">
-          Resultados
+          {t('resultsHeading')}
         </h2>
 
         {status === 'idle' && (
-          <EmptyState
-            title={config.idleTitle}
-            description="Os resultados aparecem enquanto você digita."
-          />
+          <EmptyState title={t(`modes.${mode}.idleTitle`)} description={t('idleDescription')} />
         )}
 
         {status === 'loading' && <RecipeGridSkeleton />}
@@ -97,28 +92,23 @@ export default function SearchPage() {
         {status === 'success' &&
           (data.length === 0 ? (
             <EmptyState
-              title={`Nenhuma receita encontrada para “${query}”`}
-              description={
-                mode === 'ingrediente'
-                  ? 'Use o nome do ingrediente em inglês, como aparece nas receitas (ex.: “eggs”, “garlic”).'
-                  : 'Confira a ortografia ou tente um termo mais genérico, em inglês.'
-              }
+              title={t('emptyTitle', { query })}
+              description={t(`modes.${mode}.emptyHint`)}
             />
           ) : (
             <>
               <p className={styles.count} aria-live="polite">
-                {pluralize(data.length)}{' '}
-                {mode === 'ingrediente' ? `com “${query}”` : `para “${query}”`}
+                {t(`modes.${mode}.count`, { count: data.length, query })}
               </p>
               <PagedRecipeGrid
                 items={data}
-                label={`Receitas para ${query}`}
+                label={t('resultsLabel', { query })}
                 renderItem={(recipe) => (
                   <RecipeCard
                     to={`/receita/${recipe.id}`}
                     name={recipe.name}
                     thumbnail={recipe.thumbnail}
-                    meta={recipe.meta}
+                    meta={[taxonomy.category(recipe.category), taxonomy.cuisine(recipe.area)]}
                     action={<FavoriteButton recipe={recipe} variant="icon" />}
                   />
                 )}

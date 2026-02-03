@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useParams } from 'react-router'
 import { useDocumentTitle } from '@/core/hooks/useDocumentTitle'
 import { RecipeDetail } from '@/features/recipe/components/RecipeDetail'
@@ -10,23 +11,24 @@ import { userRecipeToRecipe, useMyRecipes } from './useMyRecipes'
 import styles from './MyRecipes.module.css'
 
 export default function MyRecipeDetailPage() {
+  const { t } = useTranslation(['myRecipes', 'common'])
   const { id = '' } = useParams()
   const navigate = useNavigate()
   const { getRecipe, deleteRecipe } = useMyRecipes()
   const [confirming, setConfirming] = useState(false)
   const recipe = getRecipe(id)
 
-  useDocumentTitle(recipe?.name ?? 'Receita não encontrada')
+  useDocumentTitle(recipe?.name ?? t('notFound.title'))
 
   if (!recipe) {
     return (
       <div className="container">
         <EmptyState
-          title="Receita não encontrada"
-          description="Ela pode ter sido excluída ou criada em outro navegador."
+          title={t('notFound.title')}
+          description={t('notFound.description')}
           action={
             <Link to="/minhas-receitas" className="btn btn--primary">
-              Ver minhas receitas
+              {t('notFound.action')}
             </Link>
           }
         />
@@ -44,7 +46,7 @@ export default function MyRecipeDetailPage() {
   return (
     <div className="container">
       <div className={styles.back}>
-        <BackButton fallback="/minhas-receitas" label="Minhas receitas" />
+        <BackButton fallback="/minhas-receitas" label={t('common:nav.myRecipes')} />
       </div>
 
       <RecipeDetail
@@ -55,11 +57,11 @@ export default function MyRecipeDetailPage() {
           <>
             <Link to={`/minhas-receitas/${recipe.id}/editar`} className="btn btn--ghost">
               <EditIcon size={18} />
-              Editar
+              {t('detail.edit')}
             </Link>
             <button type="button" className="btn btn--danger" onClick={() => setConfirming(true)}>
               <TrashIcon size={18} />
-              Excluir
+              {t('detail.delete')}
             </button>
           </>
         }
@@ -67,9 +69,9 @@ export default function MyRecipeDetailPage() {
 
       <ConfirmDialog
         open={confirming}
-        title="Excluir receita?"
-        description={`“${recipe.name}” será removida deste navegador. Essa ação não pode ser desfeita.`}
-        confirmLabel="Excluir"
+        title={t('detail.confirmTitle')}
+        description={t('detail.confirmDescription', { name: recipe.name })}
+        confirmLabel={t('detail.delete')}
         onConfirm={handleDelete}
         onCancel={() => setConfirming(false)}
       />

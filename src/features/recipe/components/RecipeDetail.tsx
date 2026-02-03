@@ -1,9 +1,10 @@
 import type { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import type { Recipe } from '@/core/models/recipe'
 import { ChefHatIcon, ExternalLinkIcon, PlayIcon } from '@/shared/components/icons'
 import { thumbnailUrl } from '@/shared/utils/image'
-import { categoryLabel } from '@/shared/utils/labels'
+import { useTaxonomy } from '@/i18n/useTaxonomy'
 import { IngredientList } from './IngredientList'
 import styles from './RecipeDetail.module.css'
 
@@ -16,7 +17,12 @@ interface RecipeDetailProps {
 }
 
 export function RecipeDetail({ recipe, actions, linkTaxonomy = true }: RecipeDetailProps) {
+  const { t } = useTranslation(['recipe', 'common'])
+  const taxonomy = useTaxonomy()
   const image = thumbnailUrl(recipe.thumbnail, 'large')
+  const category = taxonomy.category(recipe.category)
+  const cuisine = taxonomy.cuisine(recipe.area)
+  const format = (value: number) => value.toLocaleString(taxonomy.language)
 
   return (
     <article className={styles.detail}>
@@ -32,24 +38,22 @@ export function RecipeDetail({ recipe, actions, linkTaxonomy = true }: RecipeDet
         </div>
 
         <div className={styles.summary}>
-          <ul className={styles.chips} aria-label="Classificação">
+          <ul className={styles.chips} aria-label={t('classification')}>
             {recipe.category && (
               <li>
                 {linkTaxonomy ? (
-                  <Link to={`/categorias/${encodeURIComponent(recipe.category)}`}>
-                    {categoryLabel(recipe.category)}
-                  </Link>
+                  <Link to={`/categorias/${encodeURIComponent(recipe.category)}`}>{category}</Link>
                 ) : (
-                  <span>{categoryLabel(recipe.category)}</span>
+                  <span>{category}</span>
                 )}
               </li>
             )}
             {recipe.area && (
               <li>
                 {linkTaxonomy ? (
-                  <Link to={`/cozinhas/${encodeURIComponent(recipe.area)}`}>{recipe.area}</Link>
+                  <Link to={`/cozinhas/${encodeURIComponent(recipe.area)}`}>{cuisine}</Link>
                 ) : (
-                  <span>{recipe.area}</span>
+                  <span>{cuisine}</span>
                 )}
               </li>
             )}
@@ -64,12 +68,12 @@ export function RecipeDetail({ recipe, actions, linkTaxonomy = true }: RecipeDet
 
           <dl className={styles.stats}>
             <div>
-              <dt>Ingredientes</dt>
-              <dd>{recipe.ingredients.length}</dd>
+              <dt>{t('stats.ingredients')}</dt>
+              <dd>{format(recipe.ingredients.length)}</dd>
             </div>
             <div>
-              <dt>Etapas</dt>
-              <dd>{recipe.instructions.length}</dd>
+              <dt>{t('stats.steps')}</dt>
+              <dd>{format(recipe.instructions.length)}</dd>
             </div>
           </dl>
 
@@ -83,8 +87,8 @@ export function RecipeDetail({ recipe, actions, linkTaxonomy = true }: RecipeDet
                 rel="noreferrer"
               >
                 <PlayIcon size={18} />
-                Assistir no YouTube
-                <span className="visually-hidden"> (abre em nova aba)</span>
+                {t('watchOnYoutube')}
+                <span className="visually-hidden"> {t('common:actions.opensInNewTab')}</span>
               </a>
             )}
             {recipe.sourceUrl && (
@@ -95,8 +99,8 @@ export function RecipeDetail({ recipe, actions, linkTaxonomy = true }: RecipeDet
                 rel="noreferrer"
               >
                 <ExternalLinkIcon size={18} />
-                Receita original
-                <span className="visually-hidden"> (abre em nova aba)</span>
+                {t('originalSource')}
+                <span className="visually-hidden"> {t('common:actions.opensInNewTab')}</span>
               </a>
             )}
           </div>
@@ -105,16 +109,16 @@ export function RecipeDetail({ recipe, actions, linkTaxonomy = true }: RecipeDet
 
       <div className={styles.content}>
         <section className={styles.panel} aria-labelledby="ingredients-title">
-          <h2 id="ingredients-title">Ingredientes</h2>
+          <h2 id="ingredients-title">{t('ingredients')}</h2>
           {recipe.ingredients.length > 0 ? (
             <IngredientList ingredients={recipe.ingredients} />
           ) : (
-            <p className={styles.muted}>Nenhum ingrediente informado.</p>
+            <p className={styles.muted}>{t('noIngredients')}</p>
           )}
         </section>
 
         <section className={styles.steps} aria-labelledby="steps-title">
-          <h2 id="steps-title">Modo de preparo</h2>
+          <h2 id="steps-title">{t('steps')}</h2>
           {recipe.instructions.length > 0 ? (
             <ol className={styles.stepList}>
               {recipe.instructions.map((step, index) => (
@@ -124,7 +128,7 @@ export function RecipeDetail({ recipe, actions, linkTaxonomy = true }: RecipeDet
               ))}
             </ol>
           ) : (
-            <p className={styles.muted}>Nenhuma instrução informada.</p>
+            <p className={styles.muted}>{t('noSteps')}</p>
           )}
         </section>
       </div>

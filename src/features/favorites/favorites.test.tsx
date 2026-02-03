@@ -41,7 +41,7 @@ describe('FavoritesPage', () => {
 
     const list = screen.getByRole('list', { name: 'Receitas favoritas' })
     expect(within(list).getByText('Teriyaki Chicken Casserole')).toBeInTheDocument()
-    expect(within(list).getByText('Japanese')).toBeInTheDocument()
+    expect(within(list).getByText('Japão')).toBeInTheDocument()
 
     await user.click(
       screen.getByRole('button', { name: 'Remover das favoritas: Teriyaki Chicken Casserole' }),

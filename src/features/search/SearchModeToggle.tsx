@@ -1,4 +1,5 @@
-import { SEARCH_MODES, type SearchMode } from './searchModes'
+import { useTranslation } from 'react-i18next'
+import { SEARCH_MODE_KEYS, type SearchMode } from './searchModes'
 import styles from './SearchModeToggle.module.css'
 
 interface SearchModeToggleProps {
@@ -6,13 +7,13 @@ interface SearchModeToggleProps {
   onChange: (mode: SearchMode) => void
 }
 
-const MODES = Object.keys(SEARCH_MODES) as SearchMode[]
-
 export function SearchModeToggle({ value, onChange }: SearchModeToggleProps) {
+  const { t } = useTranslation('search')
+
   return (
     <fieldset className={styles.toggle}>
-      <legend className="visually-hidden">Buscar por</legend>
-      {MODES.map((mode) => (
+      <legend className="visually-hidden">{t('modeLegend')}</legend>
+      {SEARCH_MODE_KEYS.map((mode) => (
         <label key={mode} className={styles.option}>
           <input
             type="radio"
@@ -21,7 +22,7 @@ export function SearchModeToggle({ value, onChange }: SearchModeToggleProps) {
             checked={value === mode}
             onChange={() => onChange(mode)}
           />
-          <span>{SEARCH_MODES[mode].label}</span>
+          <span>{t(`modes.${mode}.label`)}</span>
         </label>
       ))}
     </fieldset>

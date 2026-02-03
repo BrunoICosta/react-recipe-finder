@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import { thumbnailUrl } from '@/shared/utils/image'
 import { ChefHatIcon } from './icons'
@@ -14,6 +15,7 @@ interface RecipeCardProps {
 }
 
 export function RecipeCard({ to, name, thumbnail, meta = [], action }: RecipeCardProps) {
+  const { t } = useTranslation('recipe')
   const image = thumbnailUrl(thumbnail)
   const chips = meta.filter((item): item is string => Boolean(item))
 
@@ -35,7 +37,7 @@ export function RecipeCard({ to, name, thumbnail, meta = [], action }: RecipeCar
           </Link>
         </h3>
         {chips.length > 0 && (
-          <ul className={styles.meta} aria-label="Detalhes">
+          <ul className={styles.meta} aria-label={t('cardDetails')}>
             {chips.map((chip) => (
               <li key={chip}>{chip}</li>
             ))}

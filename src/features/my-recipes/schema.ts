@@ -17,39 +17,42 @@ function isYoutubeUrl(value: string): boolean {
   return host === 'youtube.com' || host === 'youtu.be'
 }
 
+/**
+ * Messages are translation keys from the "myRecipes" namespace (`validation.*`). A value
+ * after ":" is passed as the `max` interpolation, e.g. "validation.tooLong:40".
+ * See translateValidation().
+ */
+const tooLong = (max: number) => `validation.tooLong:${max}`
+
 /** Optional text field: empty strings are valid and kept as "". */
-const optionalText = (max: number) => z.string().trim().max(max, `Use no máximo ${max} caracteres.`)
+const optionalText = (max: number) => z.string().trim().max(max, tooLong(max))
 
 export const ingredientSchema = z.object({
-  name: z.string().trim().min(1, 'Informe o ingrediente.').max(60, 'Use no máximo 60 caracteres.'),
+  name: z.string().trim().min(1, 'validation.ingredientRequired').max(60, tooLong(60)),
   measure: optionalText(40),
 })
 
 export const recipeFormSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(3, 'O nome precisa ter pelo menos 3 caracteres.')
-    .max(80, 'Use no máximo 80 caracteres.'),
+  name: z.string().trim().min(3, 'validation.nameTooShort').max(80, tooLong(80)),
   category: optionalText(40),
   area: optionalText(40),
   thumbnail: optionalText(500).refine(
     (value) => value === '' || isHttpUrl(value),
-    'Informe um endereço de imagem válido (http ou https).',
+    'validation.invalidImageUrl',
   ),
   youtubeUrl: optionalText(500).refine(
     (value) => value === '' || isYoutubeUrl(value),
-    'Informe um link do YouTube válido.',
+    'validation.invalidYoutubeUrl',
   ),
   ingredients: z
     .array(ingredientSchema)
-    .min(1, 'Adicione pelo menos um ingrediente.')
-    .max(MAX_INGREDIENTS, `Use no máximo ${MAX_INGREDIENTS} ingredientes.`),
+    .min(1, 'validation.ingredientsMin')
+    .max(MAX_INGREDIENTS, `validation.ingredientsMax:${MAX_INGREDIENTS}`),
   instructions: z
     .string()
     .trim()
-    .min(20, 'Descreva o modo de preparo (pelo menos 20 caracteres).')
-    .max(5000, 'Use no máximo 5000 caracteres.'),
+    .min(20, 'validation.instructionsTooShort')
+    .max(5000, tooLong(5000)),
 })
 
 /** What the form holds while editing (before trimming). */
