@@ -31,24 +31,29 @@ function syncDocumentLanguage(language: string): void {
   if (typeof document !== 'undefined') document.documentElement.lang = language
 }
 
-/** Creates an initialised instance. The app uses the shared one below; tests can build fresh ones. */
-export function createI18n(instance: I18n = i18next.createInstance()): I18n {
+/**
+ * Creates an initialised instance. The app uses the shared one below; tests build fresh
+ * ones with `bindReact: false` so the instance used by components is left untouched.
+ */
+export function createI18n(
+  instance: I18n = i18next.createInstance(),
+  { bindReact = true }: { bindReact?: boolean } = {},
+): I18n {
   instance.on('languageChanged', syncDocumentLanguage)
-  void instance
-    .use(LanguageDetector)
-    .use(initReactI18next)
-    .init({
-      resources,
-      defaultNS,
-      ns: Object.keys(resources[DEFAULT_LANGUAGE]),
-      supportedLngs: SUPPORTED_LANGUAGES,
-      fallbackLng: DEFAULT_LANGUAGE,
-      detection: detectionOptions,
-      // Resources are bundled, so initialise synchronously and never suspend.
-      initAsync: false,
-      interpolation: { escapeValue: false },
-      react: { useSuspense: false },
-    })
+  instance.use(LanguageDetector)
+  if (bindReact) instance.use(initReactI18next)
+  void instance.init({
+    resources,
+    defaultNS,
+    ns: Object.keys(resources[DEFAULT_LANGUAGE]),
+    supportedLngs: SUPPORTED_LANGUAGES,
+    fallbackLng: DEFAULT_LANGUAGE,
+    detection: detectionOptions,
+    // Resources are bundled, so initialise synchronously and never suspend.
+    initAsync: false,
+    interpolation: { escapeValue: false },
+    react: { useSuspense: false },
+  })
   return instance
 }
 
