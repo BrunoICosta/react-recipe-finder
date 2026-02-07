@@ -25,7 +25,7 @@ usuário fica salvo no `localStorage` do navegador.
 - **Surpreenda-me**: abre uma receita aleatória.
 - Skeletons de carregamento, estados vazios e de erro com "Tentar novamente", paginação "Mostrar mais"
   para listas longas.
-- **Interface em português (pt-BR) e inglês**, com seletor PT/EN no menu, detecção do idioma do
+- **Interface em português (pt-BR) e inglês**, com seletor de bandeiras (Brasil/EUA) no menu, detecção do idioma do
   navegador e categorias/países traduzidos.
 - **Tema escuro** que segue o sistema, com alternância manual salva e aplicada antes da primeira pintura.
 - Layout responsivo (mobile first) e acessível: link "pular para o conteúdo", foco visível, rótulos e
@@ -80,7 +80,7 @@ A interface está em **português (pt-BR, padrão)** e **inglês (en)**, com
 
 - **Idioma inicial**: escolha salva (`localStorage`, chave `receitario:language`) → idioma do
   navegador (qualquer `pt-*` vira pt-BR, qualquer outro vira inglês) → pt-BR. A troca pelo seletor
-  PT/EN do menu é salva, atualiza `<html lang>` e o título da aba na hora, sem recarregar.
+  de bandeiras do menu é salva, atualiza `<html lang>` e o título da aba na hora, sem recarregar.
 - **Recursos tipados** (`src/i18n/locales/<idioma>/<namespace>.ts`): um arquivo por namespace
   (`common`, `search`, `recipe`, `browse`, `favorites`, `myRecipes`, `taxonomy`). O pt-BR é a
   fonte da verdade: cada arquivo em inglês é tipado como `typeof` do equivalente em português e o

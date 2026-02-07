@@ -23,7 +23,7 @@ to the user is stored in the browser's `localStorage`.
   dynamic ingredient list with `useFieldArray`, delete confirmation in a native `<dialog>`).
 - "Surprise me" random recipe, loading skeletons, empty/error states with retry, "Show more" paging.
 - Dark mode that follows the system, responsive and accessible layout.
-- **Portuguese (pt-BR) and English UI** with a PT/EN switcher.
+- **Portuguese (pt-BR) and English UI** with a flag switcher (Brazil/USA).
 
 ## Stack
 
