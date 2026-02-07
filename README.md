@@ -1,5 +1,7 @@
 # Receitário — React Recipe Finder
 
+🇧🇷 Português · [🇺🇸 English](README.en.md)
+
 Aplicação web para descobrir receitas do mundo todo: busque pelo nome do prato ou pelo ingrediente que
 você tem em casa, navegue por categorias e cozinhas, veja ingredientes e modo de preparo passo a passo,
 salve suas favoritas e mantenha um caderno com as suas próprias receitas. Os dados vêm da API pública
@@ -23,6 +25,8 @@ usuário fica salvo no `localStorage` do navegador.
 - **Surpreenda-me**: abre uma receita aleatória.
 - Skeletons de carregamento, estados vazios e de erro com "Tentar novamente", paginação "Mostrar mais"
   para listas longas.
+- **Interface em português (pt-BR) e inglês**, com seletor PT/EN no menu, detecção do idioma do
+  navegador e categorias/países traduzidos.
 - **Tema escuro** que segue o sistema, com alternância manual salva e aplicada antes da primeira pintura.
 - Layout responsivo (mobile first) e acessível: link "pular para o conteúdo", foco visível, rótulos e
   mensagens de erro associados aos campos, `aria-pressed`, `aria-live` e diálogo modal nativo.
@@ -37,6 +41,7 @@ usuário fica salvo no `localStorage` do navegador.
 | React Router                                                   | 7.11              |
 | React Hook Form + @hookform/resolvers                          | 7.70 / 5.2        |
 | Zod                                                            | 4.3               |
+| i18next + react-i18next + i18next-browser-languagedetector     | 25.7 / 16.5 / 8.2 |
 | Vitest + Testing Library (React, user-event, jest-dom) + jsdom | 4.0 / 16.3 / 27.4 |
 | ESLint (typescript-eslint, react-hooks) + Prettier             | 9.39 / 3.7        |
 
@@ -68,6 +73,37 @@ CSS Modules com design tokens em CSS custom properties — nenhuma biblioteca de
 - **Sem biblioteca de UI**: tokens de cor/espaçamento em CSS custom properties com variação escura via
   `data-theme`, ícones SVG inline e `<dialog>` nativo para a confirmação.
 
+## Internacionalização
+
+A interface está em **português (pt-BR, padrão)** e **inglês (en)**, com
+[i18next](https://www.i18next.com/) + [react-i18next](https://react.i18next.com/).
+
+- **Idioma inicial**: escolha salva (`localStorage`, chave `receitario:language`) → idioma do
+  navegador (qualquer `pt-*` vira pt-BR, qualquer outro vira inglês) → pt-BR. A troca pelo seletor
+  PT/EN do menu é salva, atualiza `<html lang>` e o título da aba na hora, sem recarregar.
+- **Recursos tipados** (`src/i18n/locales/<idioma>/<namespace>.ts`): um arquivo por namespace
+  (`common`, `search`, `recipe`, `browse`, `favorites`, `myRecipes`, `taxonomy`). O pt-BR é a
+  fonte da verdade: cada arquivo em inglês é tipado como `typeof` do equivalente em português e o
+  `CustomTypeOptions` do i18next (`src/i18n/i18next.d.ts`) faz `t('chave')` ser verificado pelo
+  TypeScript — chave faltando ou digitada errado quebra o build.
+- **Validação**: as mensagens do schema Zod são chaves (`validation.tooLong:40`), traduzidas na hora
+  de exibir por `useValidationMessage`; o mesmo schema serve aos dois idiomas e os erros já visíveis
+  mudam de idioma junto com a interface.
+- **Dados da TheMealDB** ficam como a API devolve (nomes de pratos, ingredientes e instruções em
+  inglês). Os enums são mapeados: categorias têm rótulos nos dois idiomas e as ~190 cozinhas são
+  ligadas a códigos ISO de país (`shared/utils/cuisineRegions.ts`) e nomeadas com
+  `Intl.DisplayNames` no idioma ativo ("Japanese" → "Japão" / "Japan"). Datas e números usam `Intl`
+  com o locale ativo.
+
+**Como adicionar um idioma** (ex.: espanhol):
+
+1. Copie `src/i18n/locales/en/` para `src/i18n/locales/es/` e traduza os textos (o TypeScript aponta
+   qualquer chave faltando).
+2. Registre os arquivos em `src/i18n/resources.ts` e adicione `'es'` em `SUPPORTED_LANGUAGES`
+   (`src/i18n/index.ts`), ajustando `toSupportedLanguage` para mapear `es-*`.
+3. Inclua o nome do idioma em `LANGUAGE_NAMES` (`src/app/layout/LanguageSwitcher.tsx`) e as
+   categorias em `taxonomy.ts` — os países já saem traduzidos pelo `Intl.DisplayNames`.
+
 ## Como rodar
 
 Pré-requisito: Node.js 22+.
@@ -91,6 +127,7 @@ src/
 │   ├── hooks/           # useAsync, useDebounce, useLocalStorage, useDocumentTitle
 │   ├── models/          # modelo de domínio (Recipe, Category…)
 │   └── theme/           # preferência de tema claro/escuro
+├── i18n/                # configuração do i18next, recursos pt-BR/en e useTaxonomy
 ├── features/
 │   ├── browse/          # categorias e cozinhas
 │   ├── favorites/       # favoritas (store, botão, página)
@@ -107,7 +144,7 @@ src/
 
 - Lista de compras combinando ingredientes de várias receitas.
 - Upload de foto (IndexedDB) e exportação/importação das receitas do usuário em JSON.
-- Tradução automática de instruções e ingredientes para português.
+- Tradução automática das instruções e ingredientes vindos da API.
 - Testes end-to-end com Playwright e PWA para uso offline.
 
 ## Autor
