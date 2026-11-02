@@ -8,7 +8,7 @@ favorites and keep a notebook with your own recipes. Recipe data comes from the 
 [TheMealDB](https://www.themealdb.com/api.php) API (free test key, no sign-up); everything that belongs
 to the user is stored in the browser's `localStorage`.
 
-**Demo:** https://brunoicosta.github.io/react-recipe-finder/
+**Demo:** https://portfolio.brunoisaac.dev/react-recipe-finder/
 
 ![Receitário search screen](docs/screenshot.png)
 
@@ -56,6 +56,15 @@ npm run lint
 npm run build
 npm run preview  # http://localhost:4173/react-recipe-finder/
 ```
+
+## Deploy
+
+Published on Cloudflare (Workers static assets) at
+https://portfolio.brunoisaac.dev/react-recipe-finder/ by the pipeline of the
+[portfolio](https://github.com/BrunoICosta/portfolio) repository, which runs
+`npm ci && npm run build:cf` and publishes the `dist/` folder (built with the `/react-recipe-finder/`
+base path). In this repository, the CI workflow runs format, lint, tests and build on every push and
+pull request.
 
 ## Author
 

@@ -8,7 +8,7 @@ salve suas favoritas e mantenha um caderno com as suas próprias receitas. Os da
 [TheMealDB](https://www.themealdb.com/api.php) (chave de teste gratuita, sem cadastro) e tudo o que é do
 usuário fica salvo no `localStorage` do navegador.
 
-**Demo:** https://brunoicosta.github.io/react-recipe-finder/
+**Demo:** https://portfolio.brunoisaac.dev/react-recipe-finder/
 
 ![Tela de busca do Receitário](docs/screenshot.png)
 
@@ -116,6 +116,14 @@ npm run lint         # ESLint
 npm run build        # build de produção em dist/
 npm run preview      # serve o build em http://localhost:4173/react-recipe-finder/
 ```
+
+## Deploy
+
+Publicado na Cloudflare (Workers static assets) em
+https://portfolio.brunoisaac.dev/react-recipe-finder/ pelo pipeline do repositório
+[portfolio](https://github.com/BrunoICosta/portfolio), que roda `npm ci && npm run build:cf` e publica
+a pasta `dist/` (gerada com o base path `/react-recipe-finder/`). Neste repositório, o workflow de CI
+roda formatação, lint, testes e build a cada push e pull request.
 
 ## Estrutura de pastas
 
