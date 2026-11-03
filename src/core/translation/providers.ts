@@ -2,12 +2,15 @@
  * Keyless translation providers, tried in order:
  * 1. the browser's built-in Translator API (Chrome 138+, on-device, no network);
  * 2. the public MyMemory API (https://mymemory.translated.net/doc/spec.php), free and keyless,
- *    limited to about 5000 characters per day per IP and 500 bytes per request.
+ *    limited to 500 bytes per request. Sending a contact email (`de`) raises the daily quota from
+ *    about 5000 to about 50000 characters per IP.
  */
 
 export const SOURCE_LANGUAGE = 'en'
 export const MYMEMORY_MAX_CHARS = 500
 const MYMEMORY_URL = 'https://api.mymemory.translated.net/get'
+/** Contact address MyMemory asks for to grant the higher anonymous quota. */
+const MYMEMORY_CONTACT = 'contato@brunoisaac.dev'
 
 /** The daily quota is over (or the service refused): show the original text. */
 export class TranslationLimitError extends Error {
@@ -126,6 +129,7 @@ async function myMemoryRequest(text: string, target: string, signal?: AbortSigna
   const url = new URL(MYMEMORY_URL)
   url.searchParams.set('q', text)
   url.searchParams.set('langpair', `${SOURCE_LANGUAGE}|${target}`)
+  url.searchParams.set('de', MYMEMORY_CONTACT)
 
   const response = await fetch(url, { signal })
   if (response.status === 429 || response.status === 403) {

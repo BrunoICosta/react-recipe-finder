@@ -45,8 +45,8 @@ ESLint 9 + Prettier 3. CSS Modules with design tokens, no UI library.
 - Zod messages are translation keys, translated when rendered, so one schema serves both languages.
 - TheMealDB content is English. With the Portuguese UI, `core/translation` translates it on demand
   (detail page and visible card titles only) using the browser's on-device Translator API when
-  available (Chrome 138+) and the free, keyless MyMemory API otherwise (about 5000 characters per
-  day per IP, requests up to 500 characters). Results are cached in `localStorage`; when the limit is
+  available (Chrome 138+) and the free, keyless MyMemory API otherwise (about 50000 characters per
+  day per IP with a contact email in the `de` parameter, requests up to 500 characters). Results are cached in `localStorage`; when the limit is
   reached or the network fails, the original text is shown with a small notice. Categories have labels in both languages and cuisines
   are mapped to ISO region codes and named with `Intl.DisplayNames`. Dates and numbers use `Intl`
   with the active locale.

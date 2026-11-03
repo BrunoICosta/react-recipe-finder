@@ -97,7 +97,7 @@ A interface está em **português (pt-BR, padrão)** e **inglês (en)**, com
   `core/translation` traduz sob demanda (só na página da receita e nos títulos dos cards visíveis):
   primeiro com a [Translator API](https://developer.chrome.com/docs/ai/translator-api) do próprio
   navegador (Chrome 138+, no dispositivo) e, sem ela, com a API pública e gratuita
-  [MyMemory](https://mymemory.translated.net/) (sem chave, cerca de 5000 caracteres por dia por IP,
+  [MyMemory](https://mymemory.translated.net/) (sem chave, cerca de 50000 caracteres por dia por IP com o e-mail de contato no parâmetro `de`,
   pedidos de até 500 caracteres). As traduções ficam em cache no `localStorage`; se o limite acabar ou
   a rede falhar, o texto original aparece com um aviso discreto. Os enums são mapeados: categorias têm rótulos nos dois idiomas e as ~190 cozinhas são
   ligadas a códigos ISO de país (`shared/utils/cuisineRegions.ts`) e nomeadas com

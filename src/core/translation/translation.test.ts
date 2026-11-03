@@ -53,7 +53,7 @@ describe('translateTexts with MyMemory', () => {
     expect(fetchMock).toHaveBeenCalledTimes(1)
     const url = new URL(String(fetchMock.mock.calls[0][0]))
     expect(url.origin + url.pathname).toBe('https://api.mymemory.translated.net/get')
-    expect(url.searchParams.get('langpair')).toBe('en|pt-BR')
+    expect(url.searchParams.get('langpair')).toBe('en|pt-BR')    expect(url.searchParams.get('de')).toBe('contato@brunoisaac.dev')
     // Duplicates are only sent once.
     expect(url.searchParams.get('q')).toBe('Chicken\nsoy sauce')
   })
