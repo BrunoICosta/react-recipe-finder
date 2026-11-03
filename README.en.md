@@ -1,4 +1,4 @@
-# Receitário — React Recipe Finder
+# Receitário | React Recipe Finder
 
 [🇧🇷 Português](README.md) · 🇺🇸 English
 
@@ -29,7 +29,7 @@ to the user is stored in the browser's `localStorage`.
 
 React 19.2, TypeScript 5.9 (strict), Vite 7.3, React Router 7.11, React Hook Form 7.70 + Zod 4.3,
 i18next 25.7 + react-i18next 16.5 + i18next-browser-languagedetector 8.2, Vitest 4 + Testing Library,
-ESLint 9 + Prettier 3. CSS Modules with design tokens — no UI library.
+ESLint 9 + Prettier 3. CSS Modules with design tokens, no UI library.
 
 ## Internationalization
 
@@ -68,4 +68,4 @@ pull request.
 
 ## Author
 
-Bruno Vinicius Isaac Costa — https://github.com/BrunoICosta · [MIT](LICENSE) license.
+Bruno Vinicius Isaac Costa Â· https://github.com/BrunoICosta · [MIT](LICENSE) license.

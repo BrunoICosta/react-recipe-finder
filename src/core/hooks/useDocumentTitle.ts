@@ -8,6 +8,6 @@ export function useDocumentTitle(title?: string | null): void {
   const tagline = t('app.tagline')
 
   useEffect(() => {
-    document.title = title ? `${title} · ${appName}` : `${appName} — ${tagline}`
+    document.title = title ? `${title} · ${appName}` : `${appName} | ${tagline}`
   }, [title, appName, tagline])
 }

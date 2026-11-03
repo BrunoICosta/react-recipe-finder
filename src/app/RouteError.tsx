@@ -7,7 +7,7 @@ export function RouteError() {
   const { t } = useTranslation()
   const error = useRouteError()
   const message = isRouteErrorResponse(error)
-    ? `${error.status} — ${error.statusText}`
+    ? `${error.status} ${error.statusText}`
     : t('errors.routeUnexpected')
 
   return (

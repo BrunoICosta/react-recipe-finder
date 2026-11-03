@@ -1,4 +1,4 @@
-# Receitário — React Recipe Finder
+# Receitário | React Recipe Finder
 
 🇧🇷 Português · [🇺🇸 English](README.en.md)
 
@@ -15,7 +15,7 @@ usuário fica salvo no `localStorage` do navegador.
 ## Funcionalidades
 
 - **Busca com debounce** por nome do prato ou por ingrediente, com a consulta refletida na URL
-  (`?q=…&por=ingrediente`) — dá para compartilhar o link e usar voltar/avançar do navegador.
+  (`?q=…&por=ingrediente`), dá para compartilhar o link e usar voltar/avançar do navegador.
 - **Categorias** (com nomes traduzidos) e **cozinhas por país**, com filtro instantâneo da lista de países.
 - **Página da receita** com foto, categoria, país, tags, lista de ingredientes com medidas (marcável,
   para usar na hora das compras) e modo de preparo em etapas numeradas, além do link para o vídeo no YouTube.
@@ -25,7 +25,7 @@ usuário fica salvo no `localStorage` do navegador.
 - **Surpreenda-me**: abre uma receita aleatória.
 - Skeletons de carregamento, estados vazios e de erro com "Tentar novamente", paginação "Mostrar mais"
   para listas longas.
-- **Interface em português (pt-BR) e inglês**, com seletor de bandeiras (Brasil/EUA) no menu, detecção do idioma do
+- **Interface em português (pt-BR) e inglês**: com seletor de bandeiras (Brasil/EUA) no menu, detecção do idioma do
   navegador e categorias/países traduzidos.
 - **Tema escuro** que segue o sistema, com alternância manual salva e aplicada antes da primeira pintura.
 - Layout responsivo (mobile first) e acessível: link "pular para o conteúdo", foco visível, rótulos e
@@ -45,7 +45,7 @@ usuário fica salvo no `localStorage` do navegador.
 | Vitest + Testing Library (React, user-event, jest-dom) + jsdom | 4.0 / 16.3 / 27.4 |
 | ESLint (typescript-eslint, react-hooks) + Prettier             | 9.39 / 3.7        |
 
-CSS Modules com design tokens em CSS custom properties — nenhuma biblioteca de UI.
+CSS Modules com design tokens em CSS custom properties, nenhuma biblioteca de UI.
 
 ## Arquitetura e decisões
 
@@ -63,7 +63,7 @@ CSS Modules com design tokens em CSS custom properties — nenhuma biblioteca de
   vez de chamar `setState` dentro do efeito, seguindo as regras do `eslint-plugin-react-hooks` 7.
 - **`useLocalStorage`** baseado em `useSyncExternalStore`: todos os componentes que usam a mesma chave
   compartilham o valor (o contador de favoritas no menu atualiza na hora), outras abas são sincronizadas
-  pelo evento `storage`, e os dados lidos passam por validação — no caso das receitas do usuário, pelo
+  pelo evento `storage`, e os dados lidos passam por validação, no caso das receitas do usuário, pelo
   mesmo schema Zod do formulário, descartando só o item corrompido.
 - **URL como fonte da verdade da busca** (`useSearchQuery`): o campo responde a cada tecla, a URL recebe
   o termo com debounce e o fetch reage à URL.
@@ -85,7 +85,7 @@ A interface está em **português (pt-BR, padrão)** e **inglês (en)**, com
   (`common`, `search`, `recipe`, `browse`, `favorites`, `myRecipes`, `taxonomy`). O pt-BR é a
   fonte da verdade: cada arquivo em inglês é tipado como `typeof` do equivalente em português e o
   `CustomTypeOptions` do i18next (`src/i18n/i18next.d.ts`) faz `t('chave')` ser verificado pelo
-  TypeScript — chave faltando ou digitada errado quebra o build.
+  TypeScript, chave faltando ou digitada errado quebra o build.
 - **Validação**: as mensagens do schema Zod são chaves (`validation.tooLong:40`), traduzidas na hora
   de exibir por `useValidationMessage`; o mesmo schema serve aos dois idiomas e os erros já visíveis
   mudam de idioma junto com a interface.
@@ -102,7 +102,7 @@ A interface está em **português (pt-BR, padrão)** e **inglês (en)**, com
 2. Registre os arquivos em `src/i18n/resources.ts` e adicione `'es'` em `SUPPORTED_LANGUAGES`
    (`src/i18n/index.ts`), ajustando `toSupportedLanguage` para mapear `es-*`.
 3. Inclua o nome do idioma em `LANGUAGE_NAMES` (`src/app/layout/LanguageSwitcher.tsx`) e as
-   categorias em `taxonomy.ts` — os países já saem traduzidos pelo `Intl.DisplayNames`.
+   categorias em `taxonomy.ts`; os países já saem traduzidos pelo `Intl.DisplayNames`.
 
 ## Como rodar
 
@@ -157,6 +157,6 @@ src/
 
 ## Autor
 
-Bruno Vinicius Isaac Costa — https://github.com/BrunoICosta
+Bruno Vinicius Isaac Costa Â· https://github.com/BrunoICosta
 
 Licença [MIT](LICENSE).
