@@ -13,6 +13,7 @@ import { RecipeCard } from '@/shared/components/RecipeCard'
 import { PagedRecipeGrid } from '@/shared/components/PagedRecipeGrid'
 import { RecipeGridSkeleton } from '@/shared/components/RecipeGrid'
 import { EmptyState, ErrorState } from '@/shared/components/StateMessage'
+import { TranslationNotice } from '@/shared/components/TranslationNotice'
 import styles from './Browse.module.css'
 
 export type BrowseKind = 'category' | 'cuisine'
@@ -77,23 +78,29 @@ export function BrowseResults({ kind }: { kind: BrowseKind }) {
         (data.length === 0 ? (
           <EmptyState title={t('results.emptyTitle')} description={t('results.emptyDescription')} />
         ) : (
-          <PagedRecipeGrid
-            items={data}
-            label={t('results.listLabel', { title })}
-            renderItem={(recipe) => (
-              <RecipeCard
-                to={`/receita/${recipe.id}`}
-                name={recipe.name}
-                thumbnail={recipe.thumbnail}
-                action={
-                  <FavoriteButton
-                    recipe={{ ...recipe, ...config.toFavorite(value) }}
-                    variant="icon"
-                  />
-                }
-              />
-            )}
-          />
+          <>
+            <div className={styles.notice}>
+              <TranslationNotice scope="titles" />
+            </div>
+            <PagedRecipeGrid
+              items={data}
+              label={t('results.listLabel', { title })}
+              renderItem={(recipe) => (
+                <RecipeCard
+                  to={`/receita/${recipe.id}`}
+                  name={recipe.name}
+                  thumbnail={recipe.thumbnail}
+                  translateTitle
+                  action={
+                    <FavoriteButton
+                      recipe={{ ...recipe, ...config.toFavorite(value) }}
+                      variant="icon"
+                    />
+                  }
+                />
+              )}
+            />
+          </>
         ))}
     </div>
   )

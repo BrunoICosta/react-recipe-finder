@@ -1,6 +1,8 @@
 export interface Ingredient {
   name: string
   measure: string
+  /** Original (English) name, kept when the name is machine translated. */
+  sourceName?: string
 }
 
 /** Minimal data returned by list/filter endpoints. */

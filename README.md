@@ -26,7 +26,11 @@ usuário fica salvo no `localStorage` do navegador.
 - Skeletons de carregamento, estados vazios e de erro com "Tentar novamente", paginação "Mostrar mais"
   para listas longas.
 - **Interface em português (pt-BR) e inglês**: com seletor de bandeiras (Brasil/EUA) no menu, detecção do idioma do
-  navegador e categorias/países traduzidos.
+  navegador e categorias/países traduzidos. O nome do app é "Receitário" em português e "Recipe
+  Finder" em inglês.
+- **Tradução automática das receitas** para o português (nome, ingredientes, medidas e modo de
+  preparo, além dos títulos dos cards), sem chave de API, com selo "Tradução automática" e botão
+  "Ver original".
 - **Tema escuro** que segue o sistema, com alternância manual salva e aplicada antes da primeira pintura.
 - Layout responsivo (mobile first) e acessível: link "pular para o conteúdo", foco visível, rótulos e
   mensagens de erro associados aos campos, `aria-pressed`, `aria-live` e diálogo modal nativo.
@@ -89,8 +93,13 @@ A interface está em **português (pt-BR, padrão)** e **inglês (en)**, com
 - **Validação**: as mensagens do schema Zod são chaves (`validation.tooLong:40`), traduzidas na hora
   de exibir por `useValidationMessage`; o mesmo schema serve aos dois idiomas e os erros já visíveis
   mudam de idioma junto com a interface.
-- **Dados da TheMealDB** ficam como a API devolve (nomes de pratos, ingredientes e instruções em
-  inglês). Os enums são mapeados: categorias têm rótulos nos dois idiomas e as ~190 cozinhas são
+- **Dados da TheMealDB** chegam em inglês. Com a interface em português, o serviço
+  `core/translation` traduz sob demanda (só na página da receita e nos títulos dos cards visíveis):
+  primeiro com a [Translator API](https://developer.chrome.com/docs/ai/translator-api) do próprio
+  navegador (Chrome 138+, no dispositivo) e, sem ela, com a API pública e gratuita
+  [MyMemory](https://mymemory.translated.net/) (sem chave, cerca de 5000 caracteres por dia por IP,
+  pedidos de até 500 caracteres). As traduções ficam em cache no `localStorage`; se o limite acabar ou
+  a rede falhar, o texto original aparece com um aviso discreto. Os enums são mapeados: categorias têm rótulos nos dois idiomas e as ~190 cozinhas são
   ligadas a códigos ISO de país (`shared/utils/cuisineRegions.ts`) e nomeadas com
   `Intl.DisplayNames` no idioma ativo ("Japanese" → "Japão" / "Japan"). Datas e números usam `Intl`
   com o locale ativo.

@@ -1,4 +1,4 @@
-# Receitário | React Recipe Finder
+# Recipe Finder (Receitário)
 
 [🇧🇷 Português](README.md) · 🇺🇸 English
 
@@ -23,7 +23,10 @@ to the user is stored in the browser's `localStorage`.
   dynamic ingredient list with `useFieldArray`, delete confirmation in a native `<dialog>`).
 - "Surprise me" random recipe, loading skeletons, empty/error states with retry, "Show more" paging.
 - Dark mode that follows the system, responsive and accessible layout.
-- **Portuguese (pt-BR) and English UI** with a flag switcher (Brazil/USA).
+- **Portuguese (pt-BR) and English UI** with a flag switcher (Brazil/USA). The app is called
+  "Recipe Finder" in English and "Receitário" in Portuguese.
+- **Keyless machine translation of recipes** into Portuguese (name, ingredients, measures, steps and
+  card titles), with a "Tradução automática" badge and a "Ver original" toggle.
 
 ## Stack
 
@@ -40,7 +43,11 @@ ESLint 9 + Prettier 3. CSS Modules with design tokens, no UI library.
   every English file is typed against it, so a missing key fails the build; `t()` keys are checked
   through i18next's `CustomTypeOptions`.
 - Zod messages are translation keys, translated when rendered, so one schema serves both languages.
-- TheMealDB content stays as the API returns it; categories have labels in both languages and cuisines
+- TheMealDB content is English. With the Portuguese UI, `core/translation` translates it on demand
+  (detail page and visible card titles only) using the browser's on-device Translator API when
+  available (Chrome 138+) and the free, keyless MyMemory API otherwise (about 5000 characters per
+  day per IP, requests up to 500 characters). Results are cached in `localStorage`; when the limit is
+  reached or the network fails, the original text is shown with a small notice. Categories have labels in both languages and cuisines
   are mapped to ISO region codes and named with `Intl.DisplayNames`. Dates and numbers use `Intl`
   with the active locale.
 - To add a language: copy `src/i18n/locales/en/`, translate it, register it in `resources.ts` and

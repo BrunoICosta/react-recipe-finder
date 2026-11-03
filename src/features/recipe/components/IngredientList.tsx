@@ -41,7 +41,7 @@ export function IngredientList({ ingredients }: { ingredients: Ingredient[] }) {
         <li key={`${ingredient.name}-${index}`}>
           <label className={styles.ingredient} data-checked={checked.has(index)}>
             <input type="checkbox" checked={checked.has(index)} onChange={() => toggle(index)} />
-            <IngredientThumb name={ingredient.name} />
+            <IngredientThumb name={ingredient.sourceName ?? ingredient.name} />
             <span className={styles.ingredientText}>
               <span className={styles.ingredientName}>{ingredient.name}</span>
               {ingredient.measure && (

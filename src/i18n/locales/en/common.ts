@@ -2,7 +2,7 @@ import type ptCommon from '../pt-BR/common'
 
 const common: typeof ptCommon = {
   app: {
-    name: 'Receitário',
+    name: 'Recipe Finder',
     tagline: 'find your next recipe',
   },
   nav: {
@@ -70,6 +70,15 @@ const common: typeof ptCommon = {
   },
   language: {
     label: 'Language',
+  },
+  translation: {
+    badge: 'Machine translation',
+    titlesBadge: 'Titles machine translated',
+    showOriginal: 'Show original',
+    showTranslation: 'Show translation',
+    translating: 'Translating the recipe…',
+    failed: 'Could not translate right now. Showing the original text.',
+    limit: 'The free daily translation limit was reached. Showing the original text.',
   },
   recipeCount_one: '{{count}} recipe',
   recipeCount_other: '{{count}} recipes',

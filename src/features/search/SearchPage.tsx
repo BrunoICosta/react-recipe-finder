@@ -9,6 +9,7 @@ import { RecipeCard } from '@/shared/components/RecipeCard'
 import { PagedRecipeGrid } from '@/shared/components/PagedRecipeGrid'
 import { RecipeGridSkeleton } from '@/shared/components/RecipeGrid'
 import { EmptyState, ErrorState } from '@/shared/components/StateMessage'
+import { TranslationNotice } from '@/shared/components/TranslationNotice'
 import { SearchBar } from './SearchBar'
 import { SearchModeToggle } from './SearchModeToggle'
 import { parseSearchMode, SEARCH_MODES, type SearchMode } from './searchModes'
@@ -97,9 +98,12 @@ export default function SearchPage() {
             />
           ) : (
             <>
-              <p className={styles.count} aria-live="polite">
-                {t(`modes.${mode}.count`, { count: data.length, query })}
-              </p>
+              <div className={styles.countRow}>
+                <p className={styles.count} aria-live="polite">
+                  {t(`modes.${mode}.count`, { count: data.length, query })}
+                </p>
+                <TranslationNotice scope="titles" />
+              </div>
               <PagedRecipeGrid
                 items={data}
                 label={t('resultsLabel', { query })}
@@ -109,6 +113,7 @@ export default function SearchPage() {
                     name={recipe.name}
                     thumbnail={recipe.thumbnail}
                     meta={[taxonomy.category(recipe.category), taxonomy.cuisine(recipe.area)]}
+                    translateTitle
                     action={<FavoriteButton recipe={recipe} variant="icon" />}
                   />
                 )}

@@ -11,6 +11,7 @@ const noop = () => undefined
 describe.each([
   {
     language: 'pt-BR',
+    documentTitle: 'Favoritas · Receitário',
     favoritesTitle: 'Receitas favoritas',
     emptyTitle: 'Você ainda não tem favoritas',
     nameError: 'O nome precisa ter pelo menos 3 caracteres.',
@@ -20,6 +21,7 @@ describe.each([
   },
   {
     language: 'en',
+    documentTitle: 'Favorites · Recipe Finder',
     favoritesTitle: 'Favorite recipes',
     emptyTitle: 'You have no favorites yet',
     nameError: 'The name must have at least 3 characters.',
@@ -34,7 +36,7 @@ describe.each([
 
     expect(screen.getByRole('heading', { name: expected.favoritesTitle })).toBeInTheDocument()
     expect(screen.getByText(expected.emptyTitle)).toBeInTheDocument()
-    await waitFor(() => expect(document.title).toContain('Receitário'))
+    await waitFor(() => expect(document.title).toBe(expected.documentTitle))
   })
 
   it('shows the zod validation messages in the active language', async () => {

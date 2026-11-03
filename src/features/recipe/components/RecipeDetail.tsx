@@ -12,11 +12,13 @@ interface RecipeDetailProps {
   recipe: Recipe
   /** Buttons rendered next to the title (favorite, edit, delete…). */
   actions?: ReactNode
+  /** Shown under the title, e.g. the machine translation badge. */
+  notice?: ReactNode
   /** Own recipes are not part of TheMealDB, so category/cuisine are not links. */
   linkTaxonomy?: boolean
 }
 
-export function RecipeDetail({ recipe, actions, linkTaxonomy = true }: RecipeDetailProps) {
+export function RecipeDetail({ recipe, actions, notice, linkTaxonomy = true }: RecipeDetailProps) {
   const { t } = useTranslation(['recipe', 'common'])
   const taxonomy = useTaxonomy()
   const image = thumbnailUrl(recipe.thumbnail, 'large')
@@ -65,6 +67,7 @@ export function RecipeDetail({ recipe, actions, linkTaxonomy = true }: RecipeDet
           </ul>
 
           <h1 className={styles.title}>{recipe.name}</h1>
+          {notice}
 
           <dl className={styles.stats}>
             <div>

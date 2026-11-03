@@ -69,6 +69,15 @@ const common = {
   language: {
     label: 'Idioma',
   },
+  translation: {
+    badge: 'Tradução automática',
+    titlesBadge: 'Títulos traduzidos automaticamente',
+    showOriginal: 'Ver original',
+    showTranslation: 'Ver tradução',
+    translating: 'Traduzindo a receita…',
+    failed: 'Não foi possível traduzir agora. Exibindo o texto original em inglês.',
+    limit: 'O limite diário de tradução gratuita acabou. Exibindo o texto original em inglês.',
+  },
   recipeCount_one: '{{count}} receita',
   recipeCount_other: '{{count}} receitas',
 }
